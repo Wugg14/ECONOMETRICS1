@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813_IPUMS_EXTRACT.log
   log type:  text
- opened on:  02 Oct 2026, 20:47:11
+ opened on:  17 Sep 2025, 12:00:37
 
 . set more off
 
@@ -320,28 +320,28 @@ Sorted by:
      | age      sex   statefip |
      |-------------------------|
   1. |  25     male    alabama |
-  2. |  25   female    alabama |
+  2. |  25     male    alabama |
   3. |  25     male    alabama |
   4. |  25   female    alabama |
   5. |  25     male    alabama |
      |-------------------------|
-  6. |  25     male    alabama |
-  7. |  25     male    alabama |
+  6. |  25   female    alabama |
+  7. |  25   female    alabama |
   8. |  25     male    alabama |
-  9. |  25   female    alabama |
+  9. |  25     male    alabama |
  10. |  25     male    alabama |
      |-------------------------|
  11. |  25     male    alabama |
  12. |  25     male    alabama |
  13. |  25     male    alabama |
- 14. |  25     male    alabama |
- 15. |  25     male    alabama |
+ 14. |  25   female    alabama |
+ 15. |  25   female    alabama |
      |-------------------------|
  16. |  25     male    alabama |
  17. |  25   female    alabama |
  18. |  25     male    alabama |
- 19. |  25     male    alabama |
- 20. |  25   female    alabama |
+ 19. |  25   female    alabama |
+ 20. |  25     male    alabama |
      +-------------------------+
 
 . 
@@ -358,17 +358,17 @@ Sorted by:
      +-----------------------------------+
      | age      sex   statefip   incwage |
      |-----------------------------------|
-  1. |  25   female    alabama      4000 |
-  2. |  25   female    alabama     63000 |
+  1. |  25   female    alabama     23100 |
+  2. |  25   female    alabama     40000 |
   3. |  25   female    alabama      5000 |
-  4. |  25   female    alabama     30000 |
-  5. |  25   female    alabama     24000 |
+  4. |  25   female    alabama     24000 |
+  5. |  25   female    alabama     30000 |
      |-----------------------------------|
-  6. |  25   female    alabama     12000 |
-  7. |  25   female    alabama     25000 |
-  8. |  25   female    alabama     24000 |
-  9. |  25   female    alabama     23100 |
- 10. |  25   female    alabama     40000 |
+  6. |  25   female    alabama      4000 |
+  7. |  25   female    alabama     12000 |
+  8. |  25   female    alabama     25000 |
+  9. |  25   female    alabama     24000 |
+ 10. |  25   female    alabama     63000 |
      +-----------------------------------+
 
 . restore
@@ -384,16 +384,16 @@ Sorted by:
      +---------------------------------+
      | age    sex   statefip   incwage |
      |---------------------------------|
-  1. |  25   male    alabama     54000 |
-  2. |  25   male    alabama     13000 |
-  3. |  25   male    alabama     40000 |
-  4. |  25   male    alabama      4000 |
-  5. |  25   male    alabama     20500 |
+  1. |  25   male    alabama     50000 |
+  2. |  25   male    alabama     22000 |
+  3. |  25   male    alabama     54000 |
+  4. |  25   male    alabama     38000 |
+  5. |  25   male    alabama     60000 |
      |---------------------------------|
-  6. |  25   male    alabama     11600 |
-  7. |  25   male    alabama     60000 |
-  8. |  25   male    alabama     50000 |
-  9. |  25   male    alabama      8000 |
+  6. |  25   male    alabama     53000 |
+  7. |  25   male    alabama     20500 |
+  8. |  25   male    alabama     90000 |
+  9. |  25   male    alabama     35000 |
  10. |  25   male    alabama     23500 |
      +---------------------------------+
 
@@ -1251,78 +1251,17 @@ schoolyr_resid |   1.552427   .0158692    97.83   0.000     1.521323     1.58353
 . 
 end of do-file
 
-. describe
+. do "/home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813pa2.do"
 
-Contains data from ./econ5813_acs_d1.dta
- Observations:       143,314                  
-    Variables:            56                  01 OCT 2026 19:25
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Variable      Storage   Display    Value
-    name         type    format    label      Variable label
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-year            int     %8.0g      YEAR       census year
-sample          long    %12.0g     SAMPLE     ipums sample identifier
-serial          long    %12.0g                household serial number
-cbserial        double  %12.0g                original census bureau household serial number
-hhwt            int     %8.0g                 household weight
-cluster         double  %12.0g                household cluster for variance estimation
-region          byte    %8.0g      REGION     census region and division
-statefip        byte    %8.0g      STATEFIP   state (fips code)
-strata          long    %12.0g                household strata for variance estimation
-gq              byte    %8.0g      GQ         group quarters status
-pernum          byte    %8.0g                 person number in sample unit
-perwt           int     %8.0g                 person weight
-sex             byte    %8.0g      SEX        sex
-age             byte    %8.0g      AGE        age
-birthqtr        byte    %8.0g      BIRTHQTR   quarter of birth
-marst           byte    %8.0g      MARST      marital status
-race            byte    %8.0g      RACE       race [general version]
-raced           int     %8.0g      RACED      race [detailed version]
-hispan          byte    %8.0g      HISPAN     hispanic origin [general version]
-hispand         int     %8.0g      HISPAND    hispanic origin [detailed version]
-bpl             int     %8.0g      BPL        birthplace [general version]
-bpld            long    %12.0g     BPLD       birthplace [detailed version]
-school          byte    %8.0g      SCHOOL     school attendance
-educ            byte    %8.0g      EDUC       educational attainment [general version]
-educd           int     %8.0g      EDUCD      educational attainment [detailed version]
-gradeatt        byte    %8.0g      GRADEATT   grade level attending [general version]
-gradeattd       byte    %8.0g      GRADEATTD
-                                              grade level attending [detailed version]
-schltype        byte    %8.0g      SCHLTYPE   public or private school
-degfield        byte    %8.0g      DEGFIELD   field of degree [general version]
-degfieldd       int     %8.0g      DEGFIELDD
-                                              field of degree [detailed version]
-degfield2       byte    %8.0g      DEGFIELD2
-                                              field of degree (2) [general version]
-degfield2d      int     %8.0g      DEGFIELD2D
-                                              field of degree (2) [detailed version]
-empstatd        byte    %8.0g      EMPSTATD   employment status [detailed version]
-labforce        byte    %8.0g      LABFORCE   labor force status
-classwkr        byte    %8.0g      CLASSWKR   class of worker [general version]
-classwkrd       byte    %8.0g      CLASSWKRD
-                                              class of worker [detailed version]
-occ             int     %8.0g                 occupation
-ind             int     %8.0g                 industry
-wkswork2        byte    %8.0g      WKSWORK2   weeks worked last year, intervalled
-uhrswork        byte    %8.0g      UHRSWORK   usual hours worked per week
-inctot          long    %12.0g                total personal income
-ftotinc         long    %12.0g                total family income
-incwage         long    %12.0g     INCWAGE    wage and salary income
-weeksworked     float   %9.0g                 Weeks worked
-female          float   %9.0g                 
-male            float   %9.0g                 
-wage            float   %9.0g                 
-schoolyr        float   %9.0g                 Age Squared
-schoolyr2       float   %9.0g                 
-age2            float   %9.0g                 
-ed_base         float   %9.0g                 School Baseline
-ln_ageminus20   float   %9.0g                 Natural Log of Age Minus 20
-ed_age_interact float   %9.0g                 Education and Log Age Interaction Term
-PersonID        float   %9.0g                 
-schoolyr_resid  float   %9.0g                 School Year Residual
-wage_resid      float   %9.0g                 Wage Residual
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sorted by: 
-     Note: Dataset has changed since last saved.
-
-. exit, clear
+. *** econ5813pa2.do ***
+. *** ------------------------------- ***
+. *** Created by Mark Steininger ***
+. ***************************************
+. ********************************************************
+. *** This program creates variables and estimates ***
+. *** regressions for ECON 5813 Project Assignment #2 ***
+. ********************************************************
+. **************************
+. *** Begin the log file ***
+. **************************
+. capture log close

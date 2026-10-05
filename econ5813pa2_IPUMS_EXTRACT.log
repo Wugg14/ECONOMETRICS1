@@ -1,0 +1,320 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813pa2_IPUMS_EXTRACT.log
+  log type:  text
+ opened on:  17 Sep 2025, 12:21:48
+
+. set more off
+
+. set linesize 255
+
+. set varabbrev off
+
+. 
+. *************************************************
+. *** Load the ACS data (2010 - 2024) ***
+. *** ----------------------------------------- ***
+. *** Downloaded from https://usa.ipums.org/usa ***
+. *************************************************
+. clear all
+
+. use ./econ5813_acs_d1.dta
+
+. describe, short
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:    15,819,059                  
+    Variables:            44                  01 OCT 2026 19:25
+Sorted by: 
+
+. 
+. ****************************************************
+. *** Check that the data is correct ***
+. *** -------------------------------------------- ***
+. *** Modify this to be consistent with your data. ***
+. *** Add additional data integrity checks as you ***
+. *** think of them. ***
+. ****************************************************
+. * Data includes years 2010 through 2024
+. tab year, missing
+
+census year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2010 |  1,047,221        6.62        6.62
+       2011 |  1,021,068        6.45       13.07
+       2012 |  1,029,359        6.51       19.58
+       2013 |  1,047,299        6.62       26.20
+       2014 |  1,046,851        6.62       32.82
+       2015 |  1,056,267        6.68       39.50
+       2016 |  1,061,699        6.71       46.21
+       2017 |  1,080,378        6.83       53.04
+       2018 |  1,087,020        6.87       59.91
+       2019 |  1,091,130        6.90       66.81
+       2020 |    846,175        5.35       72.16
+       2021 |  1,049,265        6.63       78.79
+       2022 |  1,110,277        7.02       85.81
+       2023 |  1,121,773        7.09       92.90
+       2024 |  1,123,277        7.10      100.00
+------------+-----------------------------------
+      Total | 15,819,059      100.00
+
+. assert inrange(year,2010,2024)==1 & r(r)==15
+
+. 
+. * Data includes individuals between the ages of 25 and 59
+. tab age, missing
+
+                                 age |      Freq.     Percent        Cum.
+-------------------------------------+-----------------------------------
+                                  25 |    405,803        2.57        2.57
+                                  26 |    409,213        2.59        5.15
+                                  27 |    417,668        2.64        7.79
+                                  28 |    425,682        2.69       10.48
+                                  29 |    427,555        2.70       13.19
+                                  30 |    449,109        2.84       16.03
+                                  31 |    434,214        2.74       18.77
+                                  32 |    440,440        2.78       21.55
+                                  33 |    436,240        2.76       24.31
+                                  34 |    436,446        2.76       27.07
+                                  35 |    443,618        2.80       29.88
+                                  36 |    432,608        2.73       32.61
+                                  37 |    430,709        2.72       35.33
+                                  38 |    434,316        2.75       38.08
+                                  39 |    433,360        2.74       40.82
+                                  40 |    456,781        2.89       43.71
+                                  41 |    435,827        2.76       46.46
+                                  42 |    442,042        2.79       49.25
+                                  43 |    441,472        2.79       52.05
+                                  44 |    441,982        2.79       54.84
+                                  45 |    457,244        2.89       57.73
+                                  46 |    451,999        2.86       60.59
+                                  47 |    459,748        2.91       63.49
+                                  48 |    466,339        2.95       66.44
+                                  49 |    473,836        3.00       69.44
+                                  50 |    501,065        3.17       72.60
+                                  51 |    484,945        3.07       75.67
+                                  52 |    493,317        3.12       78.79
+                                  53 |    494,096        3.12       81.91
+                                  54 |    493,939        3.12       85.03
+                                  55 |    494,055        3.12       88.16
+                                  56 |    479,772        3.03       91.19
+                                  57 |    475,387        3.01       94.20
+                                  58 |    466,685        2.95       97.15
+                                  59 |    451,547        2.85      100.00
+-------------------------------------+-----------------------------------
+                               Total | 15,819,059      100.00
+
+. assert inrange(age,25,59)==1
+
+. * Data includes individuals who are employed
+. tab empstat, missing
+
+ employment status |
+ [general version] |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+          employed | 15,819,059      100.00      100.00
+-------------------+-----------------------------------
+             Total | 15,819,059      100.00
+
+. assert empstat==1
+
+. 
+. ********************************************************************************
+. *** Limit sample to specific occupations                                    ***
+. *** Occupations: Logisticians, and Shipping, Receiving, and Traffic Clerks   ***
+. ********************************************************************************
+. keep if occ==0700 | occ==5610
+(15,742,379 observations deleted)
+
+. describe, short
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:        76,680                  
+    Variables:            44                  01 OCT 2026 19:25
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. 
+. *****************
+. *** Qestion 1 ***
+. *****************
+. 
+. *************
+. *** Q1 A. ***
+. *************
+. *** Recreate Weeks Worked for this Calculation***
+. generate weeksworked = .
+(76,680 missing values generated)
+
+. replace weeksworked = 7 if wkswork2==1
+(1,492 real changes made)
+
+. replace weeksworked = 20 if wkswork2==2
+(1,351 real changes made)
+
+. replace weeksworked = 33 if wkswork2==3
+(1,768 real changes made)
+
+. replace weeksworked = 43.5 if wkswork2==4
+(2,244 real changes made)
+
+. replace weeksworked = 48.5 if wkswork2==5
+(1,047 real changes made)
+
+. replace weeksworked = 51 if wkswork2==6
+(68,778 real changes made)
+
+. label variable weeksworked "Weeks worked"
+
+. tab weeksworked, missing
+
+      Weeks |
+     worked |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          7 |      1,492        1.95        1.95
+         20 |      1,351        1.76        3.71
+         33 |      1,768        2.31        6.01
+       43.5 |      2,244        2.93        8.94
+       48.5 |      1,047        1.37       10.31
+         51 |     68,778       89.69      100.00
+------------+-----------------------------------
+      Total |     76,680      100.00
+
+. assert inlist(weeksworked,7,20,33,43.5,48.5,51)==1 & r(r)==6
+
+. 
+. generate wage = 0
+
+. replace wage = incwage / (uhrswork * weeksworked)
+(76,167 real changes made)
+
+. label variable wage "Wage Calculation"
+
+. 
+. *************
+. *** Q1 B. ***
+. *************
+. generate female = 0
+
+. replace female = 1 if sex == 2
+(26,414 real changes made)
+
+. label variable wage "Female Dummy Variable"
+
+. 
+. *************
+. *** Q1 C. ***
+. *************
+. gen float schoolyr = 0
+
+. replace schoolyr = 2.5 if educd<=17
+(1,159 real changes made)
+
+. replace schoolyr = 5.5 if educd>=20 & educd<=23
+(630 real changes made)
+
+. replace schoolyr = 7.5 if educd>=24 & educd<=26
+(557 real changes made)
+
+. replace schoolyr = 9 if educd==30
+(836 real changes made)
+
+. replace schoolyr = 10 if educd==40
+(918 real changes made)
+
+. replace schoolyr = 11 if educd==50
+(1,298 real changes made)
+
+. replace schoolyr = 12 if educd>=60 & educd<=64
+(30,911 real changes made)
+
+. replace schoolyr = 13 if educd>=65 & educd<=71
+(19,436 real changes made)
+
+. replace schoolyr = 14 if educd>=80 & educd<=90
+(7,026 real changes made)
+
+. replace schoolyr = 16 if educd>=100 & educd<=101
+(11,096 real changes made)
+
+. replace schoolyr = 18 if educd>=110 & educd<=115
+(2,703 real changes made)
+
+. replace schoolyr = 20 if educd==116
+(110 real changes made)
+
+. 
+. label variable schoolyr "School Year"
+
+. tab schoolyr
+
+School Year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        2.5 |      1,159        1.51        1.51
+        5.5 |        630        0.82        2.33
+        7.5 |        557        0.73        3.06
+          9 |        836        1.09        4.15
+         10 |        918        1.20        5.35
+         11 |      1,298        1.69        7.04
+         12 |     30,911       40.31       47.35
+         13 |     19,436       25.35       72.70
+         14 |      7,026        9.16       81.86
+         16 |     11,096       14.47       96.33
+         18 |      2,703        3.53       99.86
+         20 |        110        0.14      100.00
+------------+-----------------------------------
+      Total |     76,680      100.00
+
+. assert inrange(schoolyr,2.5,20)==1 & r(r)==12
+
+. 
+. *************
+. *** Q1 D. ***
+. *************
+. gen float exp = 0
+
+. label variable exp "Portential Labor Market Expierence"
+
+. replace exp = age - schoolyr - 6
+(76,680 real changes made)
+
+. assert exp < age if !missing(exp)
+
+. 
+. *************
+. *** Q1 E. ***
+. *************
+. gen float private = 0
+
+. label variable private "Employed By Private Firm"
+
+. **Private if classified for private** 
+. replace private = 1 if (classwkrd == 22)
+(67,682 real changes made)
+
+. 
+. gen float govt = 0
+
+. label variable govt "Employed By Government"
+
+. **Private if classified for government codes, inlist returns 1 or 0** 
+. replace govt = inlist(classwkrd, 25, 27, 28)
+(5,781 real changes made)
+
+. 
+. gen float othemp = 0
+
+. label variable othemp "Employed By Other Employer"
+
+. **otheremp if classified for any code not previously used** 
+. replace othemp = !inlist(classwkrd, 22, 25, 27, 28)
+(3,217 real changes made)
+
+. 
+. ***check no-one got double marked**
+. assert private+govt+othemp==1
+
+. 
+end of do-file
+
