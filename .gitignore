@@ -1,0 +1,22 @@
+# Stata Data Files
+*.dta
+
+# Compressed & Large Archives
+*.gz
+*.gzip
+*.zip
+*.tar.gz
+*.7z
+
+# Stata Output & Temporary Files
+*.gph
+*.ster
+*.smcl
+*.tmp
+
+# OS & Text Editor Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp

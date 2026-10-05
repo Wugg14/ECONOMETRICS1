@@ -1,0 +1,1328 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813_IPUMS_EXTRACT.log
+  log type:  text
+ opened on:  02 Oct 2026, 20:47:11
+
+. set more off
+
+. set linesize 255
+
+. set varabbrev off
+
+. 
+. *************************************************
+. *** Load the ACS data (2010 - 2024) ***
+. *** ----------------------------------------- ***
+. *** Downloaded from https://usa.ipums.org/usa ***
+. *************************************************
+. clear all
+
+. use ./econ5813_acs_d1.dta
+
+. describe, short
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:    15,819,059                  
+    Variables:            44                  01 OCT 2026 19:25
+Sorted by: 
+
+. 
+. ****************************************************
+. *** Check that the data is correct ***
+. *** -------------------------------------------- ***
+. *** Modify this to be consistent with your data. ***
+. *** Add additional data integrity checks as you ***
+. *** think of them. ***
+. ****************************************************
+. * Data includes years 2010 through 2024
+. tab year, missing
+
+census year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2010 |  1,047,221        6.62        6.62
+       2011 |  1,021,068        6.45       13.07
+       2012 |  1,029,359        6.51       19.58
+       2013 |  1,047,299        6.62       26.20
+       2014 |  1,046,851        6.62       32.82
+       2015 |  1,056,267        6.68       39.50
+       2016 |  1,061,699        6.71       46.21
+       2017 |  1,080,378        6.83       53.04
+       2018 |  1,087,020        6.87       59.91
+       2019 |  1,091,130        6.90       66.81
+       2020 |    846,175        5.35       72.16
+       2021 |  1,049,265        6.63       78.79
+       2022 |  1,110,277        7.02       85.81
+       2023 |  1,121,773        7.09       92.90
+       2024 |  1,123,277        7.10      100.00
+------------+-----------------------------------
+      Total | 15,819,059      100.00
+
+. assert inrange(year,2010,2024)==1 & r(r)==15
+
+. 
+. * Data includes individuals between the ages of 25 and 59
+. tab age, missing
+
+                                 age |      Freq.     Percent        Cum.
+-------------------------------------+-----------------------------------
+                                  25 |    405,803        2.57        2.57
+                                  26 |    409,213        2.59        5.15
+                                  27 |    417,668        2.64        7.79
+                                  28 |    425,682        2.69       10.48
+                                  29 |    427,555        2.70       13.19
+                                  30 |    449,109        2.84       16.03
+                                  31 |    434,214        2.74       18.77
+                                  32 |    440,440        2.78       21.55
+                                  33 |    436,240        2.76       24.31
+                                  34 |    436,446        2.76       27.07
+                                  35 |    443,618        2.80       29.88
+                                  36 |    432,608        2.73       32.61
+                                  37 |    430,709        2.72       35.33
+                                  38 |    434,316        2.75       38.08
+                                  39 |    433,360        2.74       40.82
+                                  40 |    456,781        2.89       43.71
+                                  41 |    435,827        2.76       46.46
+                                  42 |    442,042        2.79       49.25
+                                  43 |    441,472        2.79       52.05
+                                  44 |    441,982        2.79       54.84
+                                  45 |    457,244        2.89       57.73
+                                  46 |    451,999        2.86       60.59
+                                  47 |    459,748        2.91       63.49
+                                  48 |    466,339        2.95       66.44
+                                  49 |    473,836        3.00       69.44
+                                  50 |    501,065        3.17       72.60
+                                  51 |    484,945        3.07       75.67
+                                  52 |    493,317        3.12       78.79
+                                  53 |    494,096        3.12       81.91
+                                  54 |    493,939        3.12       85.03
+                                  55 |    494,055        3.12       88.16
+                                  56 |    479,772        3.03       91.19
+                                  57 |    475,387        3.01       94.20
+                                  58 |    466,685        2.95       97.15
+                                  59 |    451,547        2.85      100.00
+-------------------------------------+-----------------------------------
+                               Total | 15,819,059      100.00
+
+. assert inrange(age,25,59)==1
+
+. * Data includes individuals who are employed
+. tab empstat, missing
+
+ employment status |
+ [general version] |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+          employed | 15,819,059      100.00      100.00
+-------------------+-----------------------------------
+             Total | 15,819,059      100.00
+
+. assert empstat==1
+
+. 
+. ********************************************************************************
+. *** Limit sample to specific occupations                                    ***
+. *** Occupations: Logisticians, and Shipping, Receiving, and Traffic Clerks   ***
+. ********************************************************************************
+. keep if occ==0700 | occ==5610
+(15,742,379 observations deleted)
+
+. describe, short
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:        76,680                  
+    Variables:            44                  01 OCT 2026 19:25
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. 
+. *****************
+. *** Qestion 3 ***
+. *****************
+. 
+. *************
+. *** Q3 A. ***
+. *************
+. describe
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:        76,680                  
+    Variables:            44                  01 OCT 2026 19:25
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+year            int     %8.0g      YEAR       census year
+sample          long    %12.0g     SAMPLE     ipums sample identifier
+serial          long    %12.0g                household serial number
+cbserial        double  %12.0g                original census bureau household serial number
+hhwt            int     %8.0g                 household weight
+cluster         double  %12.0g                household cluster for variance estimation
+region          byte    %8.0g      REGION     census region and division
+statefip        byte    %8.0g      STATEFIP   state (fips code)
+strata          long    %12.0g                household strata for variance estimation
+gq              byte    %8.0g      GQ         group quarters status
+pernum          byte    %8.0g                 person number in sample unit
+perwt           int     %8.0g                 person weight
+sex             byte    %8.0g      SEX        sex
+age             byte    %8.0g      AGE        age
+birthqtr        byte    %8.0g      BIRTHQTR   quarter of birth
+marst           byte    %8.0g      MARST      marital status
+race            byte    %8.0g      RACE       race [general version]
+raced           int     %8.0g      RACED      race [detailed version]
+hispan          byte    %8.0g      HISPAN     hispanic origin [general version]
+hispand         int     %8.0g      HISPAND    hispanic origin [detailed version]
+bpl             int     %8.0g      BPL        birthplace [general version]
+bpld            long    %12.0g     BPLD       birthplace [detailed version]
+school          byte    %8.0g      SCHOOL     school attendance
+educ            byte    %8.0g      EDUC       educational attainment [general version]
+educd           int     %8.0g      EDUCD      educational attainment [detailed version]
+gradeatt        byte    %8.0g      GRADEATT   grade level attending [general version]
+gradeattd       byte    %8.0g      GRADEATTD
+                                              grade level attending [detailed version]
+schltype        byte    %8.0g      SCHLTYPE   public or private school
+degfield        byte    %8.0g      DEGFIELD   field of degree [general version]
+degfieldd       int     %8.0g      DEGFIELDD
+                                              field of degree [detailed version]
+degfield2       byte    %8.0g      DEGFIELD2
+                                              field of degree (2) [general version]
+degfield2d      int     %8.0g      DEGFIELD2D
+                                              field of degree (2) [detailed version]
+empstat         byte    %8.0g      EMPSTAT    employment status [general version]
+empstatd        byte    %8.0g      EMPSTATD   employment status [detailed version]
+labforce        byte    %8.0g      LABFORCE   labor force status
+classwkr        byte    %8.0g      CLASSWKR   class of worker [general version]
+classwkrd       byte    %8.0g      CLASSWKRD
+                                              class of worker [detailed version]
+occ             int     %8.0g                 occupation
+ind             int     %8.0g                 industry
+wkswork2        byte    %8.0g      WKSWORK2   weeks worked last year, intervalled
+uhrswork        byte    %8.0g      UHRSWORK   usual hours worked per week
+inctot          long    %12.0g                total personal income
+ftotinc         long    %12.0g                total family income
+incwage         long    %12.0g     INCWAGE    wage and salary income
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. compress
+  (0 bytes saved)
+
+. describe
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:        76,680                  
+    Variables:            44                  01 OCT 2026 19:25
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+year            int     %8.0g      YEAR       census year
+sample          long    %12.0g     SAMPLE     ipums sample identifier
+serial          long    %12.0g                household serial number
+cbserial        double  %12.0g                original census bureau household serial number
+hhwt            int     %8.0g                 household weight
+cluster         double  %12.0g                household cluster for variance estimation
+region          byte    %8.0g      REGION     census region and division
+statefip        byte    %8.0g      STATEFIP   state (fips code)
+strata          long    %12.0g                household strata for variance estimation
+gq              byte    %8.0g      GQ         group quarters status
+pernum          byte    %8.0g                 person number in sample unit
+perwt           int     %8.0g                 person weight
+sex             byte    %8.0g      SEX        sex
+age             byte    %8.0g      AGE        age
+birthqtr        byte    %8.0g      BIRTHQTR   quarter of birth
+marst           byte    %8.0g      MARST      marital status
+race            byte    %8.0g      RACE       race [general version]
+raced           int     %8.0g      RACED      race [detailed version]
+hispan          byte    %8.0g      HISPAN     hispanic origin [general version]
+hispand         int     %8.0g      HISPAND    hispanic origin [detailed version]
+bpl             int     %8.0g      BPL        birthplace [general version]
+bpld            long    %12.0g     BPLD       birthplace [detailed version]
+school          byte    %8.0g      SCHOOL     school attendance
+educ            byte    %8.0g      EDUC       educational attainment [general version]
+educd           int     %8.0g      EDUCD      educational attainment [detailed version]
+gradeatt        byte    %8.0g      GRADEATT   grade level attending [general version]
+gradeattd       byte    %8.0g      GRADEATTD
+                                              grade level attending [detailed version]
+schltype        byte    %8.0g      SCHLTYPE   public or private school
+degfield        byte    %8.0g      DEGFIELD   field of degree [general version]
+degfieldd       int     %8.0g      DEGFIELDD
+                                              field of degree [detailed version]
+degfield2       byte    %8.0g      DEGFIELD2
+                                              field of degree (2) [general version]
+degfield2d      int     %8.0g      DEGFIELD2D
+                                              field of degree (2) [detailed version]
+empstat         byte    %8.0g      EMPSTAT    employment status [general version]
+empstatd        byte    %8.0g      EMPSTATD   employment status [detailed version]
+labforce        byte    %8.0g      LABFORCE   labor force status
+classwkr        byte    %8.0g      CLASSWKR   class of worker [general version]
+classwkrd       byte    %8.0g      CLASSWKRD
+                                              class of worker [detailed version]
+occ             int     %8.0g                 occupation
+ind             int     %8.0g                 industry
+wkswork2        byte    %8.0g      WKSWORK2   weeks worked last year, intervalled
+uhrswork        byte    %8.0g      UHRSWORK   usual hours worked per week
+inctot          long    %12.0g                total personal income
+ftotinc         long    %12.0g                total family income
+incwage         long    %12.0g     INCWAGE    wage and salary income
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. **************
+. *** Q3 B. ***
+. **************
+. list age sex statefip in 1/20
+
+     +-------------------------+
+     | age      sex   statefip |
+     |-------------------------|
+  1. |  56     male    alabama |
+  2. |  53   female    alabama |
+  3. |  58     male    alabama |
+  4. |  49     male    alabama |
+  5. |  41     male    alabama |
+     |-------------------------|
+  6. |  42     male    alabama |
+  7. |  29     male    alabama |
+  8. |  27     male    alabama |
+  9. |  48     male    alabama |
+ 10. |  32     male    alabama |
+     |-------------------------|
+ 11. |  30     male    alabama |
+ 12. |  35   female    alabama |
+ 13. |  51     male    alabama |
+ 14. |  34   female    alabama |
+ 15. |  30   female    alabama |
+     |-------------------------|
+ 16. |  56     male    alabama |
+ 17. |  46     male    alabama |
+ 18. |  41   female    alabama |
+ 19. |  52     male    alabama |
+ 20. |  41     male    alabama |
+     +-------------------------+
+
+. 
+. *************
+. *** Q3 C. ***
+. *************
+. sort statefip age
+
+. 
+. *************
+. *** Q3 D. ***
+. *************
+. list age sex statefip in 1/20
+
+     +-------------------------+
+     | age      sex   statefip |
+     |-------------------------|
+  1. |  25     male    alabama |
+  2. |  25   female    alabama |
+  3. |  25     male    alabama |
+  4. |  25   female    alabama |
+  5. |  25     male    alabama |
+     |-------------------------|
+  6. |  25     male    alabama |
+  7. |  25     male    alabama |
+  8. |  25     male    alabama |
+  9. |  25   female    alabama |
+ 10. |  25     male    alabama |
+     |-------------------------|
+ 11. |  25     male    alabama |
+ 12. |  25     male    alabama |
+ 13. |  25     male    alabama |
+ 14. |  25     male    alabama |
+ 15. |  25     male    alabama |
+     |-------------------------|
+ 16. |  25     male    alabama |
+ 17. |  25   female    alabama |
+ 18. |  25     male    alabama |
+ 19. |  25     male    alabama |
+ 20. |  25   female    alabama |
+     +-------------------------+
+
+. 
+. *************
+. *** Q3 E. ***
+. *************
+. preserve
+
+. keep if sex == 2
+(50,266 observations deleted)
+
+. list age sex statefip incwage in 1/10
+
+     +-----------------------------------+
+     | age      sex   statefip   incwage |
+     |-----------------------------------|
+  1. |  25   female    alabama      4000 |
+  2. |  25   female    alabama     63000 |
+  3. |  25   female    alabama      5000 |
+  4. |  25   female    alabama     30000 |
+  5. |  25   female    alabama     24000 |
+     |-----------------------------------|
+  6. |  25   female    alabama     12000 |
+  7. |  25   female    alabama     25000 |
+  8. |  25   female    alabama     24000 |
+  9. |  25   female    alabama     23100 |
+ 10. |  25   female    alabama     40000 |
+     +-----------------------------------+
+
+. restore
+
+. 
+. preserve
+
+. keep if sex == 1
+(26,414 observations deleted)
+
+. list age sex statefip incwage in 1/10
+
+     +---------------------------------+
+     | age    sex   statefip   incwage |
+     |---------------------------------|
+  1. |  25   male    alabama     54000 |
+  2. |  25   male    alabama     13000 |
+  3. |  25   male    alabama     40000 |
+  4. |  25   male    alabama      4000 |
+  5. |  25   male    alabama     20500 |
+     |---------------------------------|
+  6. |  25   male    alabama     11600 |
+  7. |  25   male    alabama     60000 |
+  8. |  25   male    alabama     50000 |
+  9. |  25   male    alabama      8000 |
+ 10. |  25   male    alabama     23500 |
+     +---------------------------------+
+
+. restore
+
+. 
+. 
+. *****************
+. *** Qestion 4 ***
+. *****************
+. 
+. *************
+. *** Q4 A. ***
+. *************
+. clear all
+
+. use ./econ5813_acs_d1.dta
+
+. 
+. ****************************************************
+. *** Check that the data is correct ***
+. *** -------------------------------------------- ***
+. *** Modify this to be consistent with your data. ***
+. *** Add additional data integrity checks as you ***
+. *** think of them. ***
+. ****************************************************
+. * Data includes years 2010 through 2024
+. tab year, missing
+
+census year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2010 |  1,047,221        6.62        6.62
+       2011 |  1,021,068        6.45       13.07
+       2012 |  1,029,359        6.51       19.58
+       2013 |  1,047,299        6.62       26.20
+       2014 |  1,046,851        6.62       32.82
+       2015 |  1,056,267        6.68       39.50
+       2016 |  1,061,699        6.71       46.21
+       2017 |  1,080,378        6.83       53.04
+       2018 |  1,087,020        6.87       59.91
+       2019 |  1,091,130        6.90       66.81
+       2020 |    846,175        5.35       72.16
+       2021 |  1,049,265        6.63       78.79
+       2022 |  1,110,277        7.02       85.81
+       2023 |  1,121,773        7.09       92.90
+       2024 |  1,123,277        7.10      100.00
+------------+-----------------------------------
+      Total | 15,819,059      100.00
+
+. assert inrange(year,2010,2024)==1 & r(r)==15
+
+. 
+. * Data includes individuals between the ages of 25 and 59
+. tab age, missing
+
+                                 age |      Freq.     Percent        Cum.
+-------------------------------------+-----------------------------------
+                                  25 |    405,803        2.57        2.57
+                                  26 |    409,213        2.59        5.15
+                                  27 |    417,668        2.64        7.79
+                                  28 |    425,682        2.69       10.48
+                                  29 |    427,555        2.70       13.19
+                                  30 |    449,109        2.84       16.03
+                                  31 |    434,214        2.74       18.77
+                                  32 |    440,440        2.78       21.55
+                                  33 |    436,240        2.76       24.31
+                                  34 |    436,446        2.76       27.07
+                                  35 |    443,618        2.80       29.88
+                                  36 |    432,608        2.73       32.61
+                                  37 |    430,709        2.72       35.33
+                                  38 |    434,316        2.75       38.08
+                                  39 |    433,360        2.74       40.82
+                                  40 |    456,781        2.89       43.71
+                                  41 |    435,827        2.76       46.46
+                                  42 |    442,042        2.79       49.25
+                                  43 |    441,472        2.79       52.05
+                                  44 |    441,982        2.79       54.84
+                                  45 |    457,244        2.89       57.73
+                                  46 |    451,999        2.86       60.59
+                                  47 |    459,748        2.91       63.49
+                                  48 |    466,339        2.95       66.44
+                                  49 |    473,836        3.00       69.44
+                                  50 |    501,065        3.17       72.60
+                                  51 |    484,945        3.07       75.67
+                                  52 |    493,317        3.12       78.79
+                                  53 |    494,096        3.12       81.91
+                                  54 |    493,939        3.12       85.03
+                                  55 |    494,055        3.12       88.16
+                                  56 |    479,772        3.03       91.19
+                                  57 |    475,387        3.01       94.20
+                                  58 |    466,685        2.95       97.15
+                                  59 |    451,547        2.85      100.00
+-------------------------------------+-----------------------------------
+                               Total | 15,819,059      100.00
+
+. assert inrange(age,25,59)==1
+
+. * Data includes individuals who are employed
+. tab empstat, missing
+
+ employment status |
+ [general version] |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+          employed | 15,819,059      100.00      100.00
+-------------------+-----------------------------------
+             Total | 15,819,059      100.00
+
+. assert empstat==1
+
+. 
+. ********************************************************************************
+. *** Limit sample to specific occupations                                    ***
+. *** Occupations: Logisticians, and Shipping, Receiving, and Traffic Clerks   ***
+. ********************************************************************************
+. keep if occ==0700 | occ==5610
+(15,742,379 observations deleted)
+
+. describe, short
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:        76,680                  
+    Variables:            44                  01 OCT 2026 19:25
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. ********************
+. *** Q4 A.        ***
+. *** Drop empstat ***
+. ********************
+. drop empstat
+
+. 
+. **********************************
+. *** Q4 B.                       ***
+. *** Create WeeksWorked Variable ***
+. **********************************
+. generate weeksworked = .
+(76,680 missing values generated)
+
+. replace weeksworked = 7 if wkswork2==1
+(1,492 real changes made)
+
+. replace weeksworked = 20 if wkswork2==2
+(1,351 real changes made)
+
+. replace weeksworked = 33 if wkswork2==3
+(1,768 real changes made)
+
+. replace weeksworked = 43.5 if wkswork2==4
+(2,244 real changes made)
+
+. replace weeksworked = 48.5 if wkswork2==5
+(1,047 real changes made)
+
+. replace weeksworked = 51 if wkswork2==6
+(68,778 real changes made)
+
+. label variable weeksworked "Weeks worked"
+
+. tab weeksworked, missing
+
+      Weeks |
+     worked |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          7 |      1,492        1.95        1.95
+         20 |      1,351        1.76        3.71
+         33 |      1,768        2.31        6.01
+       43.5 |      2,244        2.93        8.94
+       48.5 |      1,047        1.37       10.31
+         51 |     68,778       89.69      100.00
+------------+-----------------------------------
+      Total |     76,680      100.00
+
+. assert inlist(weeksworked,7,20,33,43.5,48.5,51)==1 & r(r)==6
+
+. 
+. 
+. *************
+. *** Q4 C. ***
+. *************
+. drop if weeksworked <= 26
+(2,843 observations deleted)
+
+. 
+. *************
+. *** Q4 D. ***
+. *************
+. drop if uhrswork < 20
+(1,047 observations deleted)
+
+. drop if uhrswork > 60
+(1,133 observations deleted)
+
+. 
+. *************
+. *** Q4 E. ***
+. *************
+. describe
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:        71,657                  
+    Variables:            44                  01 OCT 2026 19:25
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+year            int     %8.0g      YEAR       census year
+sample          long    %12.0g     SAMPLE     ipums sample identifier
+serial          long    %12.0g                household serial number
+cbserial        double  %12.0g                original census bureau household serial number
+hhwt            int     %8.0g                 household weight
+cluster         double  %12.0g                household cluster for variance estimation
+region          byte    %8.0g      REGION     census region and division
+statefip        byte    %8.0g      STATEFIP   state (fips code)
+strata          long    %12.0g                household strata for variance estimation
+gq              byte    %8.0g      GQ         group quarters status
+pernum          byte    %8.0g                 person number in sample unit
+perwt           int     %8.0g                 person weight
+sex             byte    %8.0g      SEX        sex
+age             byte    %8.0g      AGE        age
+birthqtr        byte    %8.0g      BIRTHQTR   quarter of birth
+marst           byte    %8.0g      MARST      marital status
+race            byte    %8.0g      RACE       race [general version]
+raced           int     %8.0g      RACED      race [detailed version]
+hispan          byte    %8.0g      HISPAN     hispanic origin [general version]
+hispand         int     %8.0g      HISPAND    hispanic origin [detailed version]
+bpl             int     %8.0g      BPL        birthplace [general version]
+bpld            long    %12.0g     BPLD       birthplace [detailed version]
+school          byte    %8.0g      SCHOOL     school attendance
+educ            byte    %8.0g      EDUC       educational attainment [general version]
+educd           int     %8.0g      EDUCD      educational attainment [detailed version]
+gradeatt        byte    %8.0g      GRADEATT   grade level attending [general version]
+gradeattd       byte    %8.0g      GRADEATTD
+                                              grade level attending [detailed version]
+schltype        byte    %8.0g      SCHLTYPE   public or private school
+degfield        byte    %8.0g      DEGFIELD   field of degree [general version]
+degfieldd       int     %8.0g      DEGFIELDD
+                                              field of degree [detailed version]
+degfield2       byte    %8.0g      DEGFIELD2
+                                              field of degree (2) [general version]
+degfield2d      int     %8.0g      DEGFIELD2D
+                                              field of degree (2) [detailed version]
+empstatd        byte    %8.0g      EMPSTATD   employment status [detailed version]
+labforce        byte    %8.0g      LABFORCE   labor force status
+classwkr        byte    %8.0g      CLASSWKR   class of worker [general version]
+classwkrd       byte    %8.0g      CLASSWKRD
+                                              class of worker [detailed version]
+occ             int     %8.0g                 occupation
+ind             int     %8.0g                 industry
+wkswork2        byte    %8.0g      WKSWORK2   weeks worked last year, intervalled
+uhrswork        byte    %8.0g      UHRSWORK   usual hours worked per week
+inctot          long    %12.0g                total personal income
+ftotinc         long    %12.0g                total family income
+incwage         long    %12.0g     INCWAGE    wage and salary income
+weeksworked     float   %9.0g                 Weeks worked
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. *************
+. *** Q4 F. ***
+. *************
+. generate female = 0
+
+. replace female = 1 if sex == 2
+(24,514 real changes made)
+
+. generate male = 0
+
+. replace male = 1 if sex == 1
+(47,143 real changes made)
+
+. 
+. *************
+. *** Q4 H. ***
+. *************
+. tab female male, missing
+
+           |         male
+    female |         0          1 |     Total
+-----------+----------------------+----------
+         0 |         0     47,143 |    47,143 
+         1 |    24,514          0 |    24,514 
+-----------+----------------------+----------
+     Total |    24,514     47,143 |    71,657 
+
+. 
+. *****************
+. *** Qestion 5 ***
+. *****************
+. 
+. *************
+. *** Q5 A. ***
+. *************
+. tab occ
+
+ occupation |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        700 |     16,409       22.90       22.90
+       5610 |     55,248       77.10      100.00
+------------+-----------------------------------
+      Total |     71,657      100.00
+
+. 
+. **************************************************
+. *** Q5 B. Create wage variable                 ***
+. *** Formula: income / (hours * weeks)          ***
+. **************************************************
+. generate wage = 0
+
+. replace wage = incwage / (uhrswork * weeksworked)
+(71,252 real changes made)
+
+. 
+. *************
+. *** Q5 C. ***
+. *************
+. mean wage
+
+Mean estimation                         Number of obs = 71,657
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+        wage |   19.89188   .0540276      19.78599    19.99777
+--------------------------------------------------------------
+
+. 
+. *************
+. *** Q5 D. ***
+. *************
+. mean wage if inrange(age, 20, 30)
+
+Mean estimation                         Number of obs = 12,564
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+        wage |   16.87673   .0999215      16.68087    17.07259
+--------------------------------------------------------------
+
+. 
+. *****************
+. *** Qestion 6 ***
+. *****************
+. 
+. *************
+. *** Q6 A. ***
+. *************
+. mean wage if female == 1
+
+Mean estimation                         Number of obs = 24,514
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+        wage |   18.39075   .0801037      18.23374    18.54776
+--------------------------------------------------------------
+
+. mean wage if male == 1
+
+Mean estimation                         Number of obs = 47,143
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+        wage |   20.67246   .0705071      20.53426    20.81065
+--------------------------------------------------------------
+
+. 
+. *********************************
+. *** Q6 B.                     ***
+. *** Perform two sample t-test ***
+. *********************************
+. ttest wage, by(sex) level(90)
+
+Two-sample t test with equal variances
+------------------------------------------------------------------------------
+Variable |     Obs        Mean    Std. err.   Std. dev.   [90% conf. interval]
+---------+--------------------------------------------------------------------
+    male |  47,143    20.67246    .0705071    15.30882    20.55648    20.78843
+  female |  24,514    18.39075    .0801037    12.54179    18.25899    18.52252
+---------+--------------------------------------------------------------------
+Combined |  71,657    19.89188    .0540276    14.46256    19.80301    19.98075
+---------+--------------------------------------------------------------------
+    diff |            2.281703    .1135643                2.094904    2.468502
+------------------------------------------------------------------------------
+    diff = mean(male) - mean(female)                              t =  20.0917
+H0: diff = 0                                     Degrees of freedom =    71655
+
+    Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = 1.0000         Pr(|T| > |t|) = 0.0000          Pr(T > t) = 0.0000
+
+. 
+. *************
+. *** Q6 C. ***
+. *************
+. ttest wage, by(sex) level(90)
+
+Two-sample t test with equal variances
+------------------------------------------------------------------------------
+Variable |     Obs        Mean    Std. err.   Std. dev.   [90% conf. interval]
+---------+--------------------------------------------------------------------
+    male |  47,143    20.67246    .0705071    15.30882    20.55648    20.78843
+  female |  24,514    18.39075    .0801037    12.54179    18.25899    18.52252
+---------+--------------------------------------------------------------------
+Combined |  71,657    19.89188    .0540276    14.46256    19.80301    19.98075
+---------+--------------------------------------------------------------------
+    diff |            2.281703    .1135643                2.094904    2.468502
+------------------------------------------------------------------------------
+    diff = mean(male) - mean(female)                              t =  20.0917
+H0: diff = 0                                     Degrees of freedom =    71655
+
+    Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = 1.0000         Pr(|T| > |t|) = 0.0000          Pr(T > t) = 0.0000
+
+. 
+. *****************
+. *** Qestion 7 ***
+. *****************
+. 
+. *************
+. *** Q7 A. ***
+. *************
+. gen float schoolyr = 0
+
+. replace schoolyr = 2.5 if educd<=17
+(1,059 real changes made)
+
+. replace schoolyr = 5.5 if educd>=20 & educd<=23
+(591 real changes made)
+
+. replace schoolyr = 7.5 if educd>=24 & educd<=26
+(517 real changes made)
+
+. replace schoolyr = 9 if educd==30
+(778 real changes made)
+
+. replace schoolyr = 10 if educd==40
+(837 real changes made)
+
+. replace schoolyr = 11 if educd==50
+(1,197 real changes made)
+
+. replace schoolyr = 12 if educd>=60 & educd<=64
+(29,087 real changes made)
+
+. replace schoolyr = 13 if educd>=65 & educd<=71
+(18,102 real changes made)
+
+. replace schoolyr = 14 if educd>=80 & educd<=90
+(6,568 real changes made)
+
+. replace schoolyr = 16 if educd>=100 & educd<=101
+(10,317 real changes made)
+
+. replace schoolyr = 18 if educd>=110 & educd<=115
+(2,503 real changes made)
+
+. replace schoolyr = 20 if educd==116
+(101 real changes made)
+
+. 
+. label variable schoolyr "School Year"
+
+. tab schoolyr
+
+School Year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        2.5 |      1,059        1.48        1.48
+        5.5 |        591        0.82        2.30
+        7.5 |        517        0.72        3.02
+          9 |        778        1.09        4.11
+         10 |        837        1.17        5.28
+         11 |      1,197        1.67        6.95
+         12 |     29,087       40.59       47.54
+         13 |     18,102       25.26       72.80
+         14 |      6,568        9.17       81.97
+         16 |     10,317       14.40       96.37
+         18 |      2,503        3.49       99.86
+         20 |        101        0.14      100.00
+------------+-----------------------------------
+      Total |     71,657      100.00
+
+. assert inrange(schoolyr,2.5,20)==1 & r(r)==12
+
+. 
+. *************
+. *** Q7 B. ***
+. *************
+. regress wage schoolyr
+
+      Source |       SS           df       MS      Number of obs   =    71,657
+-------------+----------------------------------   F(1, 71655)     =   4145.73
+       Model |   819729.24         1   819729.24   Prob > F        =    0.0000
+    Residual |  14168240.5    71,655  197.728567   R-squared       =    0.0547
+-------------+----------------------------------   Adj R-squared   =    0.0547
+       Total |  14987969.7    71,656  209.165593   Root MSE        =    14.062
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.457043   .0226293    64.39   0.000      1.41269    1.501397
+       _cons |   1.047072   .2973554     3.52   0.000     .4642562    1.629888
+------------------------------------------------------------------------------
+
+. 
+. *************
+. *** Q7 C. ***
+. *************
+. regress wage schoolyr age
+
+      Source |       SS           df       MS      Number of obs   =    71,657
+-------------+----------------------------------   F(2, 71654)     =   2807.14
+       Model |  1089018.15         2  544509.077   Prob > F        =    0.0000
+    Residual |  13898951.6    71,654  193.973143   R-squared       =    0.0727
+-------------+----------------------------------   Adj R-squared   =    0.0726
+       Total |  14987969.7    71,656  209.165593   Root MSE        =    13.927
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.541652   .0225282    68.43   0.000     1.497497    1.585807
+         age |   .1899276   .0050974    37.26   0.000     .1799367    .1999185
+       _cons |  -8.075512    .382997   -21.09   0.000    -8.826185   -7.324839
+------------------------------------------------------------------------------
+
+. 
+. *************
+. *** Q7 D. ***
+. *************
+. gen schoolyr2 = schoolyr^2
+
+. label variable schoolyr "School Year Squared"
+
+. gen age2 = age^2
+
+. label variable schoolyr "Age Squared"
+
+. regress wage schoolyr schoolyr2 age age2
+
+      Source |       SS           df       MS      Number of obs   =    71,657
+-------------+----------------------------------   F(4, 71652)     =   2005.07
+       Model |  1508773.84         4   377193.46   Prob > F        =    0.0000
+    Residual |  13479195.9    71,652  188.120302   R-squared       =    0.1007
+-------------+----------------------------------   Adj R-squared   =    0.1006
+       Total |  14987969.7    71,656  209.165593   Root MSE        =    13.716
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |  -2.489227   .0902463   -27.58   0.000     -2.66611   -2.312345
+   schoolyr2 |   .1726525   .0037438    46.12   0.000     .1653146    .1799904
+         age |    .629441   .0477545    13.18   0.000     .5358424    .7230396
+        age2 |  -.0051821   .0005651    -9.17   0.000    -.0062897   -.0040745
+       _cons |   5.473244     1.1325     4.83   0.000     3.253548    7.692941
+------------------------------------------------------------------------------
+
+. 
+. *************
+. *** Q7 E. ***
+. *************
+. regress wage schoolyr schoolyr2 age age2 if sex == 1
+
+      Source |       SS           df       MS      Number of obs   =    47,143
+-------------+----------------------------------   F(4, 47138)     =   1349.80
+       Model |  1135415.06         4  283853.764   Prob > F        =    0.0000
+    Residual |  9912780.88    47,138  210.292776   R-squared       =    0.1028
+-------------+----------------------------------   Adj R-squared   =    0.1027
+       Total |  11048195.9    47,142  234.359932   Root MSE        =    14.501
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   -2.61949   .1161141   -22.56   0.000    -2.847076   -2.391905
+   schoolyr2 |   .1799546   .0048365    37.21   0.000     .1704749    .1894343
+         age |   .7101072    .061914    11.47   0.000     .5887549    .8314595
+        age2 |  -.0057312   .0007345    -7.80   0.000     -.007171   -.0042915
+       _cons |   4.434779   1.458637     3.04   0.002      1.57583    7.293729
+------------------------------------------------------------------------------
+
+. regress wage schoolyr schoolyr2 age age2 if sex == 2
+
+      Source |       SS           df       MS      Number of obs   =    24,514
+-------------+----------------------------------   F(4, 24509)     =    736.75
+       Model |  413865.519         4   103466.38   Prob > F        =    0.0000
+    Residual |  3441944.68    24,509  140.435949   R-squared       =    0.1073
+-------------+----------------------------------   Adj R-squared   =    0.1072
+       Total |   3855810.2    24,513  157.296545   Root MSE        =    11.851
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |  -2.136737   .1370326   -15.59   0.000    -2.405329   -1.868145
+   schoolyr2 |   .1550506   .0056406    27.49   0.000     .1439946    .1661065
+         age |   .5002421   .0714726     7.00   0.000     .3601514    .6403328
+        age2 |  -.0042546   .0008413    -5.06   0.000    -.0059037   -.0026056
+       _cons |   5.984924   1.717584     3.48   0.000     2.618355    9.351494
+------------------------------------------------------------------------------
+
+. 
+. *************
+. *** Q7 F. ***
+. *************
+. gen ed_base = schoolyr - 12
+
+. label variable ed_base "School Baseline"
+
+. gen ln_ageminus20 = ln(age - 20) if age > 20
+
+. label variable ln_ageminus20 "Natural Log of Age Minus 20"
+
+. gen ed_age_interact = ed_base * ln_ageminus20
+
+. label variable ed_age_interact "Education and Log Age Interaction Term"
+
+. regress wage ed_base ln_ageminus20 ed_age_interact
+
+      Source |       SS           df       MS      Number of obs   =    71,657
+-------------+----------------------------------   F(3, 71653)     =   1927.21
+       Model |  1119073.64         3  373024.545   Prob > F        =    0.0000
+    Residual |  13868896.1    71,653  193.556391   R-squared       =    0.0747
+-------------+----------------------------------   Adj R-squared   =    0.0746
+       Total |  14987969.7    71,656  209.165593   Root MSE        =    13.912
+
+---------------------------------------------------------------------------------
+           wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+        ed_base |    .673925   .1292413     5.21   0.000     .4206124    .9272377
+  ln_ageminus20 |   3.246251   .1025135    31.67   0.000     3.045325    3.447177
+ed_age_interact |    .288567   .0422193     6.83   0.000     .2058174    .3713166
+          _cons |    8.87671   .3142423    28.25   0.000     8.260796    9.492624
+---------------------------------------------------------------------------------
+
+. 
+. mean schoolyr
+
+Mean estimation                         Number of obs = 71,657
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+    schoolyr |   12.93359   .0086718       12.9166    12.95059
+--------------------------------------------------------------
+
+. mean age
+
+Mean estimation                         Number of obs = 71,657
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+         age |   42.27029   .0383251      42.19517     42.3454
+--------------------------------------------------------------
+
+. 
+. *****************
+. *** Qestion 8 ***
+. *****************
+. 
+. regress wage schoolyr age, robust
+
+Linear regression                               Number of obs     =     71,657
+                                                F(2, 71654)       =    1472.10
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0727
+                                                Root MSE          =     13.927
+
+------------------------------------------------------------------------------
+             |               Robust
+        wage | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.541652     .03185    48.40   0.000     1.479226    1.604078
+         age |   .1899276   .0051224    37.08   0.000     .1798877    .1999674
+       _cons |  -8.075512   .5026802   -16.06   0.000    -9.060763    -7.09026
+------------------------------------------------------------------------------
+
+. generate PersonID = _n
+
+. expand 2
+(71,657 observations created)
+
+. **run it again**
+. regress wage schoolyr age, robust
+
+Linear regression                               Number of obs     =    143,314
+                                                F(2, 143311)      =    2944.26
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0727
+                                                Root MSE          =     13.927
+
+------------------------------------------------------------------------------
+             |               Robust
+        wage | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.541652   .0225211    68.45   0.000     1.497511    1.585793
+         age |   .1899276    .003622    52.44   0.000     .1828285    .1970267
+       _cons |  -8.075512   .3554448   -22.72   0.000    -8.772176   -7.378847
+------------------------------------------------------------------------------
+
+. **new argument**
+. regress wage schoolyr age, vce(cluster PersonID)
+
+Linear regression                               Number of obs     =    143,314
+                                                F(2, 71656)       =    1472.12
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0727
+                                                Root MSE          =     13.927
+
+                          (Std. err. adjusted for 71,657 clusters in PersonID)
+------------------------------------------------------------------------------
+             |               Robust
+        wage | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.541652   .0318498    48.40   0.000     1.479226    1.604077
+         age |   .1899276   .0051223    37.08   0.000     .1798878    .1999674
+       _cons |  -8.075512   .5026766   -16.07   0.000    -9.060756   -7.090267
+------------------------------------------------------------------------------
+
+. 
+. *****************
+. *** Qestion 9 ***
+. *****************
+. 
+. **(1)**
+. regress schoolyr age female
+
+      Source |       SS           df       MS      Number of obs   =   143,314
+-------------+----------------------------------   F(2, 143311)    =    764.53
+       Model |  8152.53019         2   4076.2651   Prob > F        =    0.0000
+    Residual |  764092.978   143,311    5.331712   R-squared       =    0.0106
+-------------+----------------------------------   Adj R-squared   =    0.0105
+       Total |  772245.508   143,313  5.38852378   Root MSE        =    2.3091
+
+------------------------------------------------------------------------------
+    schoolyr | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |  -.0230542   .0005954   -38.72   0.000    -.0242213   -.0218872
+      female |   .0976142   .0128761     7.58   0.000     .0723774     .122851
+       _cons |   13.87471   .0260375   532.87   0.000     13.82368    13.92574
+------------------------------------------------------------------------------
+
+. 
+. **(2)**
+. regress wage age female
+
+      Source |       SS           df       MS      Number of obs   =   143,314
+-------------+----------------------------------   F(2, 143311)    =   1358.78
+       Model |   557845.22         2   278922.61   Prob > F        =    0.0000
+    Residual |  29418094.3   143,311  205.274503   R-squared       =    0.0186
+-------------+----------------------------------   Adj R-squared   =    0.0186
+       Total |  29975939.5   143,313  209.164134   Root MSE        =    14.327
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .1610215   .0036946    43.58   0.000     .1537802    .1682628
+      female |  -2.472213   .0798945   -30.94   0.000    -2.628804   -2.315621
+       _cons |    13.9312     .16156    86.23   0.000     13.61455    14.24786
+------------------------------------------------------------------------------
+
+. 
+. **school year residual first**
+. regress schoolyr age female
+
+      Source |       SS           df       MS      Number of obs   =   143,314
+-------------+----------------------------------   F(2, 143311)    =    764.53
+       Model |  8152.53019         2   4076.2651   Prob > F        =    0.0000
+    Residual |  764092.978   143,311    5.331712   R-squared       =    0.0106
+-------------+----------------------------------   Adj R-squared   =    0.0105
+       Total |  772245.508   143,313  5.38852378   Root MSE        =    2.3091
+
+------------------------------------------------------------------------------
+    schoolyr | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |  -.0230542   .0005954   -38.72   0.000    -.0242213   -.0218872
+      female |   .0976142   .0128761     7.58   0.000     .0723774     .122851
+       _cons |   13.87471   .0260375   532.87   0.000     13.82368    13.92574
+------------------------------------------------------------------------------
+
+. predict schoolyr_resid, residual
+
+. label variable schoolyr_resid "School Year Residual"
+
+. ** wage residual next**
+. regress wage age female
+
+      Source |       SS           df       MS      Number of obs   =   143,314
+-------------+----------------------------------   F(2, 143311)    =   1358.78
+       Model |   557845.22         2   278922.61   Prob > F        =    0.0000
+    Residual |  29418094.3   143,311  205.274503   R-squared       =    0.0186
+-------------+----------------------------------   Adj R-squared   =    0.0186
+       Total |  29975939.5   143,313  209.164134   Root MSE        =    14.327
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .1610215   .0036946    43.58   0.000     .1537802    .1682628
+      female |  -2.472213   .0798945   -30.94   0.000    -2.628804   -2.315621
+       _cons |    13.9312     .16156    86.23   0.000     13.61455    14.24786
+------------------------------------------------------------------------------
+
+. predict wage_resid, residual
+
+. label variable wage_resid "Wage Residual"
+
+. **verify, these should be like crazy small numbers**
+. sum schoolyr_resid wage_resid
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+schoolyr_r~d |    143,314   -5.58e-10    2.309034  -10.89597   7.485491
+  wage_resid |    143,314   -4.87e-09     14.3273  -23.43147   367.7117
+
+. 
+. **(3)**
+. regress wage_resid schoolyr_resid
+
+      Source |       SS           df       MS      Number of obs   =   143,314
+-------------+----------------------------------   F(1, 143312)    =   9569.96
+       Model |  1841486.33         1  1841486.33   Prob > F        =    0.0000
+    Residual |  27576607.8   143,312  192.423578   R-squared       =    0.0626
+-------------+----------------------------------   Adj R-squared   =    0.0626
+       Total |  29418094.2   143,313  205.271637   Root MSE        =    13.872
+
+--------------------------------------------------------------------------------
+    wage_resid | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+schoolyr_resid |   1.552427   .0158692    97.83   0.000     1.521323     1.58353
+         _cons |  -4.00e-09   .0366425    -0.00   1.000    -.0718185    .0718185
+--------------------------------------------------------------------------------
+
+. 
+. **(4)**
+. regress wage schoolyr age female
+
+      Source |       SS           df       MS      Number of obs   =   143,314
+-------------+----------------------------------   F(3, 143310)    =   4156.28
+       Model |  2399331.54         3  799777.181   Prob > F        =    0.0000
+    Residual |  27576607.9   143,310  192.426264   R-squared       =    0.0800
+-------------+----------------------------------   Adj R-squared   =    0.0800
+       Total |  29975939.5   143,313  209.164134   Root MSE        =    13.872
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.552427   .0158693    97.83   0.000     1.521323     1.58353
+         age |   .1968115   .0035957    54.73   0.000     .1897639    .2038591
+      female |  -2.623751   .0773693   -33.91   0.000    -2.775394   -2.472109
+       _cons |  -7.608267   .2700894   -28.17   0.000    -8.137637   -7.078897
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. describe
+
+Contains data from ./econ5813_acs_d1.dta
+ Observations:       143,314                  
+    Variables:            56                  01 OCT 2026 19:25
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+year            int     %8.0g      YEAR       census year
+sample          long    %12.0g     SAMPLE     ipums sample identifier
+serial          long    %12.0g                household serial number
+cbserial        double  %12.0g                original census bureau household serial number
+hhwt            int     %8.0g                 household weight
+cluster         double  %12.0g                household cluster for variance estimation
+region          byte    %8.0g      REGION     census region and division
+statefip        byte    %8.0g      STATEFIP   state (fips code)
+strata          long    %12.0g                household strata for variance estimation
+gq              byte    %8.0g      GQ         group quarters status
+pernum          byte    %8.0g                 person number in sample unit
+perwt           int     %8.0g                 person weight
+sex             byte    %8.0g      SEX        sex
+age             byte    %8.0g      AGE        age
+birthqtr        byte    %8.0g      BIRTHQTR   quarter of birth
+marst           byte    %8.0g      MARST      marital status
+race            byte    %8.0g      RACE       race [general version]
+raced           int     %8.0g      RACED      race [detailed version]
+hispan          byte    %8.0g      HISPAN     hispanic origin [general version]
+hispand         int     %8.0g      HISPAND    hispanic origin [detailed version]
+bpl             int     %8.0g      BPL        birthplace [general version]
+bpld            long    %12.0g     BPLD       birthplace [detailed version]
+school          byte    %8.0g      SCHOOL     school attendance
+educ            byte    %8.0g      EDUC       educational attainment [general version]
+educd           int     %8.0g      EDUCD      educational attainment [detailed version]
+gradeatt        byte    %8.0g      GRADEATT   grade level attending [general version]
+gradeattd       byte    %8.0g      GRADEATTD
+                                              grade level attending [detailed version]
+schltype        byte    %8.0g      SCHLTYPE   public or private school
+degfield        byte    %8.0g      DEGFIELD   field of degree [general version]
+degfieldd       int     %8.0g      DEGFIELDD
+                                              field of degree [detailed version]
+degfield2       byte    %8.0g      DEGFIELD2
+                                              field of degree (2) [general version]
+degfield2d      int     %8.0g      DEGFIELD2D
+                                              field of degree (2) [detailed version]
+empstatd        byte    %8.0g      EMPSTATD   employment status [detailed version]
+labforce        byte    %8.0g      LABFORCE   labor force status
+classwkr        byte    %8.0g      CLASSWKR   class of worker [general version]
+classwkrd       byte    %8.0g      CLASSWKRD
+                                              class of worker [detailed version]
+occ             int     %8.0g                 occupation
+ind             int     %8.0g                 industry
+wkswork2        byte    %8.0g      WKSWORK2   weeks worked last year, intervalled
+uhrswork        byte    %8.0g      UHRSWORK   usual hours worked per week
+inctot          long    %12.0g                total personal income
+ftotinc         long    %12.0g                total family income
+incwage         long    %12.0g     INCWAGE    wage and salary income
+weeksworked     float   %9.0g                 Weeks worked
+female          float   %9.0g                 
+male            float   %9.0g                 
+wage            float   %9.0g                 
+schoolyr        float   %9.0g                 Age Squared
+schoolyr2       float   %9.0g                 
+age2            float   %9.0g                 
+ed_base         float   %9.0g                 School Baseline
+ln_ageminus20   float   %9.0g                 Natural Log of Age Minus 20
+ed_age_interact float   %9.0g                 Education and Log Age Interaction Term
+PersonID        float   %9.0g                 
+schoolyr_resid  float   %9.0g                 School Year Residual
+wage_resid      float   %9.0g                 Wage Residual
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. exit, clear
