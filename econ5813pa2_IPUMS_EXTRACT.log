@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813pa2_IPUMS_EXTRACT.log
   log type:  text
- opened on:  17 Sep 2025, 12:21:48
+ opened on:  17 Sep 2025, 15:21:30
 
 . set more off
 
@@ -285,7 +285,7 @@ School Year |      Freq.     Percent        Cum.
 . *************
 . *** Q1 E. ***
 . *************
-. gen float private = 0
+. gen byte private = 0
 
 . label variable private "Employed By Private Firm"
 
@@ -294,7 +294,7 @@ School Year |      Freq.     Percent        Cum.
 (67,682 real changes made)
 
 . 
-. gen float govt = 0
+. gen byte govt = 0
 
 . label variable govt "Employed By Government"
 
@@ -303,7 +303,7 @@ School Year |      Freq.     Percent        Cum.
 (5,781 real changes made)
 
 . 
-. gen float othemp = 0
+. gen byte othemp = 0
 
 . label variable othemp "Employed By Other Employer"
 
@@ -314,6 +314,136 @@ School Year |      Freq.     Percent        Cum.
 . 
 . ***check no-one got double marked**
 . assert private+govt+othemp==1
+
+. 
+. *************
+. *** Q1 F. ***
+. *************
+. gen byte married = 0
+
+. label variable married "Is This Individual Married"
+
+. replace married = inlist(marst, 1, 2)
+(41,667 real changes made)
+
+. 
+. *************
+. *** Q1 G. ***
+. *************
+. gen byte foreign = 0
+
+. label variable foreign "Foreign Born"
+
+. ** Include All Codes for States and Territories **
+. replace foreign = 1 if bpl > 115
+(13,334 real changes made)
+
+. 
+. *************
+. *** Q1 G. ***
+. *************
+. gen byte hisp = (hispand>=100 & hispand<=499)
+
+. label variable hisp "Hispanic"
+
+. gen byte white = inrange(raced, 100, 199) & hisp==0
+
+. gen byte black = inrange(raced, 200, 299) & hisp==0
+
+. gen byte indian = inrange(raced,300,399)==1 & hisp==0
+
+. gen byte asian = inrange(raced,400,699)==1 & hisp==0
+
+. gen byte other_race = inrange(raced,700,996) & hisp==0
+
+. label variable white "White"
+
+. label variable black "Black"
+
+. label variable indian "Indian"
+
+. label variable asian "Asian"
+
+. label variable other_race "Other Race"
+
+. assert white+hisp+black+asian+indian+other_race==1
+
+. gen byte race_cat6 = 0
+
+. replace race_cat6 = 1 if white==1
+(46,734 real changes made)
+
+. replace race_cat6 = 2 if hisp==1
+(15,178 real changes made)
+
+. replace race_cat6 = 3 if black==1
+(8,676 real changes made)
+
+. replace race_cat6 = 4 if asian==1
+(3,649 real changes made)
+
+. replace race_cat6 = 5 if indian==1
+(425 real changes made)
+
+. replace race_cat6 = 6 if other_race==1
+(2,018 real changes made)
+
+. label variable race_cat6 "Race Category (race is non-Hispanic)"
+
+. #delimit ;
+delimiter now ;
+. label define race_cat6_lbl
+> 0 "ERROR!"
+> 1 "White"
+> 2 "Hispanic"
+> 3 "Black"
+> 4 "Asian"
+> 5 "Indian"
+> 6 "Other race";
+
+. #delimit cr
+delimiter now cr
+. label values race_cat6 race_cat6_lbl
+
+. tab race_cat6, missing
+
+       Race |
+   Category |
+   (race is |
+non-Hispani |
+         c) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      White |     46,734       60.95       60.95
+   Hispanic |     15,178       19.79       80.74
+      Black |      8,676       11.31       92.06
+      Asian |      3,649        4.76       96.81
+     Indian |        425        0.55       97.37
+ Other race |      2,018        2.63      100.00
+------------+-----------------------------------
+      Total |     76,680      100.00
+
+. assert inlist(race_cat6,1,2,3,4,5,6)==1 & r(r)==6
+
+. 
+. *************
+. *** Q1 J. ***
+. *************
+. **all vals below HS diplomas**
+. gen byte elem = ((educd <= 61) | missing(educd))
+
+. ** all vals with dimplomas or ged and some college**
+. gen byte hs = inrange(educd,63,71 )
+
+. ** bachelors and associates, include other professional degrees **
+. gen byte college = (educd == 81 | educd == 101 | educd == 115)
+
+. gen byte ma = (educd == 114)
+
+. gen byte phd = (educd == 116)
+
+. 
+. **assert check dummy vars**
+. assert elem+hs+college+ma+phd==1
 
 . 
 end of do-file

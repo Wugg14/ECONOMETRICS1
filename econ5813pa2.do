@@ -112,17 +112,17 @@ assert exp < age if !missing(exp)
 *************
 *** Q1 E. ***
 *************
-gen float private = 0
+gen byte private = 0
 label variable private "Employed By Private Firm"
 **Private if classified for private** 
 replace private = 1 if (classwkrd == 22)
 
-gen float govt = 0
+gen byte govt = 0
 label variable govt "Employed By Government"
 **Private if classified for government codes, inlist returns 1 or 0** 
 replace govt = inlist(classwkrd, 25, 27, 28)
 
-gen float othemp = 0
+gen byte othemp = 0
 label variable othemp "Employed By Other Employer"
 **otheremp if classified for any code not previously used** 
 replace othemp = !inlist(classwkrd, 22, 25, 27, 28)
@@ -133,3 +133,70 @@ assert private+govt+othemp==1
 *************
 *** Q1 F. ***
 *************
+gen byte married = 0
+label variable married "Is This Individual Married"
+replace married = inlist(marst, 1, 2)
+
+*************
+*** Q1 G. ***
+*************
+gen byte foreign = 0
+label variable foreign "Foreign Born"
+** Include All Codes for States and Territories **
+replace foreign = 1 if bpl > 115
+
+*************
+*** Q1 G. ***
+*************
+gen byte hisp = (hispand>=100 & hispand<=499)
+label variable hisp "Hispanic"
+**missing codes in the white range I've corrected here**
+gen byte white = inrange(raced, 100, 199) & hisp==0
+**missing codes in the black range for educd I've corrected**
+gen byte black = inrange(raced, 200, 299) & hisp==0
+gen byte indian = inrange(raced,300,399)==1 & hisp==0
+gen byte asian = inrange(raced,400,699)==1 & hisp==0
+gen byte other_race = inrange(raced,700,996) & hisp==0
+label variable white "White"
+label variable black "Black"
+label variable indian "Indian"
+label variable asian "Asian"
+label variable other_race "Other Race"
+**this assertion kept failing, I've corrected the ranges from the provided code**
+assert white+hisp+black+asian+indian+other_race==1
+gen byte race_cat6 = 0
+replace race_cat6 = 1 if white==1
+replace race_cat6 = 2 if hisp==1
+replace race_cat6 = 3 if black==1
+replace race_cat6 = 4 if asian==1
+replace race_cat6 = 5 if indian==1
+replace race_cat6 = 6 if other_race==1
+label variable race_cat6 "Race Category (race is non-Hispanic)"
+#delimit ;
+label define race_cat6_lbl
+0 "ERROR!"
+1 "White"
+2 "Hispanic"
+3 "Black"
+4 "Asian"
+5 "Indian"
+6 "Other race";
+#delimit cr
+label values race_cat6 race_cat6_lbl
+tab race_cat6, missing
+assert inlist(race_cat6,1,2,3,4,5,6)==1 & r(r)==6
+
+*************
+*** Q1 J. ***
+*************
+**all vals below HS diplomas**
+gen byte elem = ((educd <= 61) | missing(educd))
+** all vals with dimplomas or ged and some college**
+gen byte hs = inrange(educd,63,71 )
+** bachelors and associates, include other professional degrees **
+gen byte college = (educd == 81 | educd == 101 | educd == 115)
+gen byte ma = (educd == 114)
+gen byte phd = (educd == 116)
+
+**assert check dummy vars**
+assert elem+hs+college+ma+phd==1
