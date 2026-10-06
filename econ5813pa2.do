@@ -200,3 +200,22 @@ gen byte phd = (educd == 116)
 
 **assert check dummy vars**
 assert elem+hs+college+ma+phd==1
+gen byte educ_cat5 = 0
+replace educ_cat5 = 1 if elem==1
+replace educ_cat5 = 2 if hs==1
+replace educ_cat5 = 3 if college==1
+replace educ_cat5 = 4 if ma==1
+replace educ_cat5 = 5 if phd==1
+label variable educ_cat5 "Education Category"
+#delimit ;
+label define educ_cat5_lbl
+0 "ERROR!"
+1 "Elemtary School"
+2 "High School"
+3 "College/Professional Degree"
+4 "Masters Degree"
+5 "PhD";
+#delimit cr
+label values educ_cat5 educ_cat5_lbl
+tab educ_cat5, missing
+assert inlist(educ_cat5,1,2,3,4,5)==1 & r(r)==6

@@ -1,8 +1,8 @@
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813pa2_IPUMS_EXTRACT.log
   log type:  text
- opened on:  17 Sep 2025, 15:21:30
+ opened on:  17 Sep 2025, 12:05:37
 
 . set more off
 
@@ -346,8 +346,10 @@ School Year |      Freq.     Percent        Cum.
 
 . label variable hisp "Hispanic"
 
+. **missing codes in the white range I've corrected here**
 . gen byte white = inrange(raced, 100, 199) & hisp==0
 
+. **missing codes in the black range for educd I've corrected**
 . gen byte black = inrange(raced, 200, 299) & hisp==0
 
 . gen byte indian = inrange(raced,300,399)==1 & hisp==0
@@ -366,6 +368,7 @@ School Year |      Freq.     Percent        Cum.
 
 . label variable other_race "Other Race"
 
+. **this assertion kept failing, I've corrected the ranges from the provided code**
 . assert white+hisp+black+asian+indian+other_race==1
 
 . gen byte race_cat6 = 0
@@ -445,6 +448,58 @@ non-Hispani |
 . **assert check dummy vars**
 . assert elem+hs+college+ma+phd==1
 
-. 
+. gen byte educ_cat5 = 0
+
+. replace educ_cat5 = 1 if elem==1
+(7,172 real changes made)
+
+. replace educ_cat5 = 2 if hs==1
+(48,573 real changes made)
+
+. replace educ_cat5 = 3 if college==1
+(18,309 real changes made)
+
+. replace educ_cat5 = 4 if ma==1
+(2,516 real changes made)
+
+. replace educ_cat5 = 5 if phd==1
+(110 real changes made)
+
+. label variable educ_cat5 "Education Category"
+
+. #delimit ;
+delimiter now ;
+. label define educ_cat5_lbl
+> 0 "ERROR!"
+> 1 "Elemtary School"
+> 2 "High School"
+> 3 "College/Professional Degree"
+> 4 "Masters Degree"
+> 5 "PhD";
+
+. #delimit cr
+delimiter now cr
+. label values educ_cat5 educ_cat5_lbl
+
+. tab educ_cat5, missing
+
+         Education Category |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+            Elemtary School |      7,172        9.35        9.35
+                High School |     48,573       63.35       72.70
+College/Professional Degree |     18,309       23.88       96.58
+             Masters Degree |      2,516        3.28       99.86
+                        PhD |        110        0.14      100.00
+----------------------------+-----------------------------------
+                      Total |     76,680      100.00
+
+. assert inlist(educ_cat5,1,2,3,4,5)==1 & r(r)==6
+76,680 contradictions in 76,680 observations
+assertion is false
+r(9);
+
 end of do-file
 
+r(9);
+
+. exit, clear
