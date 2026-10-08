@@ -193,9 +193,10 @@ assert inlist(race_cat6,1,2,3,4,5,6)==1 & r(r)==6
 gen byte elem = ((educd <= 61) | missing(educd))
 ** all vals with dimplomas or ged and some college**
 gen byte hs = inrange(educd,63,71 )
-** bachelors and associates, include other professional degrees **
-gen byte college = (educd == 81 | educd == 101 | educd == 115)
-gen byte ma = (educd == 114)
+** bachelors and associates**
+gen byte college = (educd == 81 | educd == 101)
+** masters and include other professional degrees**
+gen byte ma = (educd == 114 | educd == 115)
 gen byte phd = (educd == 116)
 
 **assert check dummy vars**
@@ -212,10 +213,136 @@ label define educ_cat5_lbl
 0 "ERROR!"
 1 "Elemtary School"
 2 "High School"
-3 "College/Professional Degree"
-4 "Masters Degree"
+3 "College"
+4 "Masters Degree/Professional Degree"
 5 "PhD";
 #delimit cr
 label values educ_cat5 educ_cat5_lbl
 tab educ_cat5, missing
-assert inlist(educ_cat5,1,2,3,4,5)==1 & r(r)==6
+assert inlist(educ_cat5,1,2,3,4,5)==1 & r(r)==5
+
+**************************
+*** Q3 Means and SEs *****
+*** for Vars by Gender ***
+**************************
+*** weeksworked ***
+mean weeksworked if female == 0
+mean weeksworked if female == 1
+mean weeksworked
+
+*** wage ***
+mean wage if female == 0
+mean wage if female == 1
+mean wage
+
+*** female ***
+mean female if female == 0
+mean female if female == 1
+mean female
+
+*** schoolyr ***
+mean schoolyr if female == 0
+mean schoolyr if female == 1
+mean schoolyr
+
+
+*** exp ***
+mean exp if female == 0
+mean exp if female == 1
+mean exp
+
+*** private ***
+mean private if female == 0
+mean private if female == 1
+mean private
+
+*** govt ***
+mean govt if female == 0
+mean govt if female == 1
+mean govt
+
+*** othemp ***
+mean othemp if female == 0
+mean othemp if female == 1
+mean othemp
+
+*** married ***
+mean married if female == 0
+mean married if female == 1
+mean married
+
+*** foreign ***
+mean foreign if female == 0
+mean foreign if female == 1
+mean foreign
+
+*** hisp ***
+mean hisp if female == 0
+mean hisp if female == 1
+mean hisp
+
+*** white ***
+mean white if female == 0
+mean white if female == 1
+mean white
+
+
+*** black ***
+mean black if female == 0
+mean black if female == 1
+mean black
+
+*** indian ***
+mean indian if female == 0
+mean indian if female == 1
+mean indian
+
+*** asian ***
+mean asian if female == 0
+mean asian if female == 1
+mean asian
+
+*** other_race ***
+mean other_race if female == 0
+mean other_race if female == 1
+mean other_race
+
+*** race_cat6 ***
+mean race_cat6 if female == 0
+mean race_cat6 if female == 1
+mean race_cat6
+
+*** elem ***
+mean elem if female == 0
+mean elem if female == 1
+mean elem
+
+*** hs ***
+mean hs if female == 0
+mean hs if female == 1
+mean hs
+
+*** college ***
+mean college if female == 0
+mean college if female == 1
+mean college
+
+*** ma ***
+mean ma if female == 0
+mean ma if female == 1
+mean ma
+
+*** phd ***
+mean phd if female == 0
+mean phd if female == 1
+mean phd
+
+*** educ_cat5 ***
+mean educ_cat5 if female == 0
+mean educ_cat5 if female == 1
+mean educ_cat5
+
+*****************
+*** Qestion 4***
+*****************
+regress wage exp
