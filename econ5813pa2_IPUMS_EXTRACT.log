@@ -1,8 +1,8 @@
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/mark/Desktop/Stata Projects/ECONOMETRICS1/econ5813pa2_IPUMS_EXTRACT.log
   log type:  text
- opened on:  17 Sep 2025, 12:06:10
+ opened on:  09 Oct 2026, 19:37:22
 
 . set more off
 
@@ -137,7 +137,7 @@ Sorted by:
 . 
 . 
 . *****************
-. *** Qestion 1 ***
+. *** Question 1 ***
 . *****************
 . 
 . *************
@@ -497,39 +497,11 @@ Masters Degree/Professional Degree |      2,703        3.53       99.86
 . assert inlist(educ_cat5,1,2,3,4,5)==1 & r(r)==5
 
 . 
-end of do-file
-
-. tab weeksworked
-
-      Weeks |
-     worked |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          7 |      1,492        1.95        1.95
-         20 |      1,351        1.76        3.71
-         33 |      1,768        2.31        6.01
-       43.5 |      2,244        2.93        8.94
-       48.5 |      1,047        1.37       10.31
-         51 |     68,778       89.69      100.00
-------------+-----------------------------------
-      Total |     76,680      100.00
-
-. describe weeksworked
-
-Variable      Storage   Display    Value
-    name         type    format    label      Variable label
--------------------------------------------------------------------------------------------------------------------------------
-weeksworked     float   %9.0g                 Weeks worked
-
-. sum weeksworked if female = 0
-invalid syntax
-r(198);
-
-. sum weeksworked if female == 0
-
-    Variable |        Obs        Mean    Std. dev.       Min        Max
--------------+---------------------------------------------------------
- weeksworked |     50,266    49.06818    7.424242          7         51
-
+. **************************
+. *** Q3 Means and SEs *****
+. *** for Vars by Gender ***
+. **************************
+. *** weeksworked ***
 . mean weeksworked if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -540,17 +512,6 @@ Mean estimation                         Number of obs = 50,266
  weeksworked |   49.06818   .0331143      49.00327    49.13308
 --------------------------------------------------------------
 
-. mean weeksworked if female == 0
-
-Mean estimation                         Number of obs = 50,266
-
---------------------------------------------------------------
-             |       Mean   Std. err.     [95% conf. interval]
--------------+------------------------------------------------
- weeksworked |   49.06818   .0331143      49.00327    49.13308
---------------------------------------------------------------
-
-. 
 . mean weeksworked if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -561,7 +522,6 @@ Mean estimation                         Number of obs = 26,414
  weeksworked |   48.66429   .0506547        48.565    48.76357
 --------------------------------------------------------------
 
-. 
 . mean weeksworked
 
 Mean estimation                         Number of obs = 76,680
@@ -572,6 +532,8 @@ Mean estimation                         Number of obs = 76,680
  weeksworked |   48.92905   .0278594      48.87444    48.98365
 --------------------------------------------------------------
 
+. 
+. *** wage ***
 . mean wage if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -582,7 +544,6 @@ Mean estimation                         Number of obs = 50,266
         wage |   21.43221   .1114444      21.21378    21.65064
 --------------------------------------------------------------
 
-. 
 . mean wage if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -593,7 +554,6 @@ Mean estimation                         Number of obs = 26,414
         wage |   19.24267   .1594614      18.93012    19.55523
 --------------------------------------------------------------
 
-. 
 . mean wage
 
 Mean estimation                         Number of obs = 76,680
@@ -604,9 +564,8 @@ Mean estimation                         Number of obs = 76,680
         wage |   20.67798   .0914786      20.49868    20.85728
 --------------------------------------------------------------
 
-. *** female ***
-
 . 
+. *** female ***
 . mean female if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -617,7 +576,6 @@ Mean estimation                         Number of obs = 50,266
       female |          0  (omitted)
 --------------------------------------------------------------
 
-. 
 . mean female if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -628,7 +586,6 @@ Mean estimation                         Number of obs = 26,414
       female |          1          0             .           .
 --------------------------------------------------------------
 
-. 
 . mean female
 
 Mean estimation                         Number of obs = 76,680
@@ -639,6 +596,8 @@ Mean estimation                         Number of obs = 76,680
       female |   .3444705   .0017161       .341107     .347834
 --------------------------------------------------------------
 
+. 
+. *** schoolyr ***
 . mean schoolyr if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -649,7 +608,6 @@ Mean estimation                         Number of obs = 50,266
     schoolyr |   12.90783   .0104935      12.88726     12.9284
 --------------------------------------------------------------
 
-. 
 . mean schoolyr if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -660,7 +618,6 @@ Mean estimation                         Number of obs = 26,414
     schoolyr |   12.98747    .014116       12.9598    13.01514
 --------------------------------------------------------------
 
-. 
 . mean schoolyr
 
 Mean estimation                         Number of obs = 76,680
@@ -671,9 +628,9 @@ Mean estimation                         Number of obs = 76,680
     schoolyr |   12.93526   .0084249      12.91875    12.95178
 --------------------------------------------------------------
 
-. *** exp ***
-
 . 
+. 
+. *** exp ***
 . mean exp if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -684,7 +641,6 @@ Mean estimation                         Number of obs = 50,266
          exp |   22.83735     .04803      22.74321    22.93148
 --------------------------------------------------------------
 
-. 
 . mean exp if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -695,7 +651,6 @@ Mean estimation                         Number of obs = 26,414
          exp |   23.88052   .0658983      23.75135    24.00968
 --------------------------------------------------------------
 
-. 
 . mean exp
 
 Mean estimation                         Number of obs = 76,680
@@ -706,9 +661,8 @@ Mean estimation                         Number of obs = 76,680
          exp |   23.19669    .038856      23.12053    23.27284
 --------------------------------------------------------------
 
-. *** private ***
-
 . 
+. *** private ***
 . mean private if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -719,7 +673,6 @@ Mean estimation                         Number of obs = 50,266
      private |   .8790833   .0014542       .876233    .8819335
 --------------------------------------------------------------
 
-. 
 . mean private if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -730,7 +683,6 @@ Mean estimation                         Number of obs = 26,414
      private |   .8894526   .0019294      .8856708    .8932343
 --------------------------------------------------------------
 
-. 
 . mean private
 
 Mean estimation                         Number of obs = 76,680
@@ -741,9 +693,8 @@ Mean estimation                         Number of obs = 76,680
      private |   .8826552   .0011622      .8803772    .8849331
 --------------------------------------------------------------
 
-. *** govt ***
-
 . 
+. *** govt ***
 . mean govt if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -754,7 +705,6 @@ Mean estimation                         Number of obs = 50,266
         govt |   .0818048   .0012224      .0794088    .0842008
 --------------------------------------------------------------
 
-. 
 . mean govt if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -765,7 +715,6 @@ Mean estimation                         Number of obs = 26,414
         govt |   .0631862    .001497      .0602519    .0661204
 --------------------------------------------------------------
 
-. 
 . mean govt
 
 Mean estimation                         Number of obs = 76,680
@@ -776,26 +725,8 @@ Mean estimation                         Number of obs = 76,680
         govt |   .0753912   .0009535      .0735225      .07726
 --------------------------------------------------------------
 
-. *** otheremp ***
-
 . 
-. mean otheremp if female == 0
-variable otheremp not found
-r(111);
-
-. 
-. mean otheremp if female == 1
-variable otheremp not found
-r(111);
-
-. 
-. mean otheremp
-variable otheremp not found
-r(111);
-
 . *** othemp ***
-
-. 
 . mean othemp if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -806,7 +737,6 @@ Mean estimation                         Number of obs = 50,266
       othemp |   .0391119   .0008647      .0374171    .0408067
 --------------------------------------------------------------
 
-. 
 . mean othemp if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -817,7 +747,6 @@ Mean estimation                         Number of obs = 26,414
       othemp |   .0473612    .001307      .0447995     .049923
 --------------------------------------------------------------
 
-. 
 . mean othemp
 
 Mean estimation                         Number of obs = 76,680
@@ -828,9 +757,8 @@ Mean estimation                         Number of obs = 76,680
       othemp |   .0419536    .000724      .0405345    .0433726
 --------------------------------------------------------------
 
-. *** married ***
-
 . 
+. *** married ***
 . mean married if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -841,7 +769,6 @@ Mean estimation                         Number of obs = 50,266
      married |   .5536347   .0022173      .5492887    .5579806
 --------------------------------------------------------------
 
-. 
 . mean married if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -852,7 +779,6 @@ Mean estimation                         Number of obs = 26,414
      married |   .5238888    .003073      .5178656    .5299121
 --------------------------------------------------------------
 
-. 
 . mean married
 
 Mean estimation                         Number of obs = 76,680
@@ -863,6 +789,8 @@ Mean estimation                         Number of obs = 76,680
      married |   .5433881   .0017988      .5398624    .5469138
 --------------------------------------------------------------
 
+. 
+. *** foreign ***
 . mean foreign if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -873,7 +801,6 @@ Mean estimation                         Number of obs = 50,266
      foreign |   .1748498   .0016942      .1715291    .1781705
 --------------------------------------------------------------
 
-. 
 . mean foreign if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -884,7 +811,6 @@ Mean estimation                         Number of obs = 26,414
      foreign |   .1720678   .0023224      .1675158    .1766199
 --------------------------------------------------------------
 
-. 
 . mean foreign
 
 Mean estimation                         Number of obs = 76,680
@@ -895,6 +821,8 @@ Mean estimation                         Number of obs = 76,680
      foreign |   .1738915   .0013687      .1712088    .1765742
 --------------------------------------------------------------
 
+. 
+. *** hisp ***
 . mean hisp if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -905,7 +833,6 @@ Mean estimation                         Number of obs = 50,266
         hisp |   .2030398   .0017942      .1995231    .2065565
 --------------------------------------------------------------
 
-. 
 . mean hisp if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -916,7 +843,6 @@ Mean estimation                         Number of obs = 26,414
         hisp |   .1882335   .0024052      .1835191    .1929479
 --------------------------------------------------------------
 
-. 
 . mean hisp
 
 Mean estimation                         Number of obs = 76,680
@@ -927,9 +853,8 @@ Mean estimation                         Number of obs = 76,680
         hisp |   .1979395   .0014389      .1951192    .2007597
 --------------------------------------------------------------
 
-. *** white ***
-
 . 
+. *** white ***
 . mean white if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -940,7 +865,6 @@ Mean estimation                         Number of obs = 50,266
        white |   .6026738   .0021826      .5983958    .6069518
 --------------------------------------------------------------
 
-. 
 . mean white if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -951,7 +875,6 @@ Mean estimation                         Number of obs = 26,414
        white |   .6223972   .0029829      .6165505    .6282439
 --------------------------------------------------------------
 
-. 
 . mean white
 
 Mean estimation                         Number of obs = 76,680
@@ -962,9 +885,9 @@ Mean estimation                         Number of obs = 76,680
        white |   .6094679   .0017618      .6060147    .6129211
 --------------------------------------------------------------
 
-. *** black ***
-
 . 
+. 
+. *** black ***
 . mean black if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -975,7 +898,6 @@ Mean estimation                         Number of obs = 50,266
        black |   .1168583   .0014329      .1140498    .1196668
 --------------------------------------------------------------
 
-. 
 . mean black if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -986,7 +908,6 @@ Mean estimation                         Number of obs = 26,414
        black |   .1060801   .0018948      .1023663     .109794
 --------------------------------------------------------------
 
-. 
 . mean black
 
 Mean estimation                         Number of obs = 76,680
@@ -997,9 +918,8 @@ Mean estimation                         Number of obs = 76,680
        black |   .1131455   .0011439      .1109034    .1153877
 --------------------------------------------------------------
 
-. *** indian ***
-
 . 
+. *** indian ***
 . mean indian if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1010,7 +930,6 @@ Mean estimation                         Number of obs = 50,266
       indian |   .0052322   .0003218      .0046015    .0058629
 --------------------------------------------------------------
 
-. 
 . mean indian if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1021,7 +940,6 @@ Mean estimation                         Number of obs = 26,414
       indian |   .0061331   .0004804      .0051915    .0070747
 --------------------------------------------------------------
 
-. 
 . mean indian
 
 Mean estimation                         Number of obs = 76,680
@@ -1032,6 +950,8 @@ Mean estimation                         Number of obs = 76,680
       indian |   .0055425   .0002681       .005017     .006068
 --------------------------------------------------------------
 
+. 
+. *** asian ***
 . mean asian if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1042,7 +962,6 @@ Mean estimation                         Number of obs = 50,266
        asian |   .0462141   .0009364      .0443787    .0480496
 --------------------------------------------------------------
 
-. 
 . mean asian if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1053,7 +972,6 @@ Mean estimation                         Number of obs = 26,414
        asian |   .0502007   .0013436      .0475672    .0528341
 --------------------------------------------------------------
 
-. 
 . mean asian
 
 Mean estimation                         Number of obs = 76,680
@@ -1064,6 +982,8 @@ Mean estimation                         Number of obs = 76,680
        asian |   .0475874   .0007688      .0460805    .0490942
 --------------------------------------------------------------
 
+. 
+. *** other_race ***
 . mean other_race if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1074,7 +994,6 @@ Mean estimation                         Number of obs = 50,266
   other_race |   .0259818   .0007096       .024591    .0273725
 --------------------------------------------------------------
 
-. 
 . mean other_race if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1085,7 +1004,6 @@ Mean estimation                         Number of obs = 26,414
   other_race |   .0269554   .0009965      .0250022    .0289086
 --------------------------------------------------------------
 
-. 
 . mean other_race
 
 Mean estimation                         Number of obs = 76,680
@@ -1096,9 +1014,8 @@ Mean estimation                         Number of obs = 76,680
   other_race |   .0263172   .0005781      .0251841    .0274502
 --------------------------------------------------------------
 
-. *** race_cat6 ***
-
 . 
+. *** race_cat6 ***
 . mean race_cat6 if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1109,7 +1026,6 @@ Mean estimation                         Number of obs = 50,266
    race_cat6 |   1.726236   .0050704      1.716298    1.736174
 --------------------------------------------------------------
 
-. 
 . mean race_cat6 if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1120,7 +1036,6 @@ Mean estimation                         Number of obs = 26,414
    race_cat6 |   1.710305    .007101      1.696387    1.724223
 --------------------------------------------------------------
 
-. 
 . mean race_cat6
 
 Mean estimation                         Number of obs = 76,680
@@ -1131,6 +1046,8 @@ Mean estimation                         Number of obs = 76,680
    race_cat6 |   1.720749   .0041269       1.71266    1.728837
 --------------------------------------------------------------
 
+. 
+. *** elem ***
 . mean elem if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1141,7 +1058,6 @@ Mean estimation                         Number of obs = 50,266
         elem |   .0982175   .0013274      .0956157    .1008193
 --------------------------------------------------------------
 
-. 
 . mean elem if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1152,7 +1068,6 @@ Mean estimation                         Number of obs = 26,414
         elem |   .0846142   .0017124      .0812577    .0879707
 --------------------------------------------------------------
 
-. 
 . mean elem
 
 Mean estimation                         Number of obs = 76,680
@@ -1163,9 +1078,8 @@ Mean estimation                         Number of obs = 76,680
         elem |   .0935316   .0010515      .0914706    .0955925
 --------------------------------------------------------------
 
-. *** hs ***
-
 . 
+. *** hs ***
 . mean hs if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1176,7 +1090,6 @@ Mean estimation                         Number of obs = 50,266
           hs |   .6348227   .0021476      .6306135     .639032
 --------------------------------------------------------------
 
-. 
 . mean hs if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1187,7 +1100,6 @@ Mean estimation                         Number of obs = 26,414
           hs |   .6308397   .0029693      .6250197    .6366597
 --------------------------------------------------------------
 
-. 
 . mean hs
 
 Mean estimation                         Number of obs = 76,680
@@ -1198,6 +1110,8 @@ Mean estimation                         Number of obs = 76,680
           hs |   .6334507   .0017401        .63004    .6368614
 --------------------------------------------------------------
 
+. 
+. *** college ***
 . mean college if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1208,7 +1122,6 @@ Mean estimation                         Number of obs = 50,266
      college |   .2308718   .0018795      .2271878    .2345557
 --------------------------------------------------------------
 
-. 
 . mean college if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1219,7 +1132,6 @@ Mean estimation                         Number of obs = 26,414
      college |   .2467252   .0026526      .2415259    .2519245
 --------------------------------------------------------------
 
-. 
 . mean college
 
 Mean estimation                         Number of obs = 76,680
@@ -1230,6 +1142,8 @@ Mean estimation                         Number of obs = 76,680
      college |   .2363328   .0015342      .2333258    .2393398
 --------------------------------------------------------------
 
+. 
+. *** ma ***
 . mean ma if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1240,7 +1154,6 @@ Mean estimation                         Number of obs = 50,266
           ma |   .0346158   .0008154      .0330177     .036214
 --------------------------------------------------------------
 
-. 
 . mean ma if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1251,7 +1164,6 @@ Mean estimation                         Number of obs = 26,414
           ma |   .0364579   .0011532      .0341975    .0387184
 --------------------------------------------------------------
 
-. 
 . mean ma
 
 Mean estimation                         Number of obs = 76,680
@@ -1262,9 +1174,8 @@ Mean estimation                         Number of obs = 76,680
           ma |   .0352504    .000666      .0339451    .0365557
 --------------------------------------------------------------
 
-. *** phd ***
-
 . 
+. *** phd ***
 . mean phd if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1275,7 +1186,6 @@ Mean estimation                         Number of obs = 50,266
          phd |   .0014722    .000171       .001137    .0018074
 --------------------------------------------------------------
 
-. 
 . mean phd if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1286,7 +1196,6 @@ Mean estimation                         Number of obs = 26,414
          phd |   .0013629    .000227       .000918    .0018078
 --------------------------------------------------------------
 
-. 
 . mean phd
 
 Mean estimation                         Number of obs = 76,680
@@ -1297,6 +1206,8 @@ Mean estimation                         Number of obs = 76,680
          phd |   .0014345   .0001367      .0011666    .0017024
 --------------------------------------------------------------
 
+. 
+. *** educ_cat5 ***
 . mean educ_cat5 if female == 0
 
 Mean estimation                         Number of obs = 50,266
@@ -1307,7 +1218,6 @@ Mean estimation                         Number of obs = 50,266
    educ_cat5 |   2.206302   .0029527      2.200515     2.21209
 --------------------------------------------------------------
 
-. 
 . mean educ_cat5 if female == 1
 
 Mean estimation                         Number of obs = 26,414
@@ -1318,7 +1228,6 @@ Mean estimation                         Number of obs = 26,414
    educ_cat5 |   2.239116   .0040454      2.231186    2.247045
 --------------------------------------------------------------
 
-. 
 . mean educ_cat5
 
 Mean estimation                         Number of obs = 76,680
@@ -1329,6 +1238,10 @@ Mean estimation                         Number of obs = 76,680
    educ_cat5 |   2.217606   .0023857       2.21293    2.222282
 --------------------------------------------------------------
 
+. 
+. *****************
+. *** Question 4 ***
+. *****************
 . regress wage exp
 
       Source |       SS           df       MS      Number of obs   =    76,680
@@ -1345,3 +1258,511 @@ Mean estimation                         Number of obs = 76,680
        _cons |   19.47717   .2173513    89.61   0.000     19.05117    19.90318
 ------------------------------------------------------------------------------
 
+. 
+. *************
+. *** Q4 D. ***
+. *************
+. predict wage_hat
+(option xb assumed; fitted values)
+
+. **compare wage_hat and wage values**
+. sum wage_hat
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    wage_hat |     76,680    20.67798    .5569885   19.42541   22.09137
+
+. sum wage
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+        wage |     76,680    20.67798    25.33147          0   2678.572
+
+. 
+. *****************
+. *** Qestion 5 ***
+. *****************
+. regress wage exp if female == 0
+
+      Source |       SS           df       MS      Number of obs   =    50,266
+-------------+----------------------------------   F(1, 50264)     =    109.12
+       Model |  67975.6987         1  67975.6987   Prob > F        =    0.0000
+    Residual |  31312257.8    50,264  622.955949   R-squared       =    0.0022
+-------------+----------------------------------   Adj R-squared   =    0.0021
+       Total |  31380233.5    50,265  624.295902   Root MSE        =    24.959
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         exp |   .1079927   .0103382    10.45   0.000     .0877297    .1282558
+       _cons |   18.96594   .2610275    72.66   0.000     18.45433    19.47756
+------------------------------------------------------------------------------
+
+. regress wage exp if female == 1
+
+      Source |       SS           df       MS      Number of obs   =    26,414
+-------------+----------------------------------   F(1, 26412)     =      8.35
+       Model |  5609.05223         1  5609.05223   Prob > F        =    0.0039
+    Residual |  17734783.6    26,412  671.466893   R-squared       =    0.0003
+-------------+----------------------------------   Adj R-squared   =    0.0003
+       Total |  17740392.6    26,413   671.65383   Root MSE        =    25.913
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         exp |  -.0430274   .0148872    -2.89   0.004     -.072207   -.0138477
+       _cons |   20.27019   .3896289    52.02   0.000      19.5065    21.03388
+------------------------------------------------------------------------------
+
+. 
+. *************
+. *** Q5 A. ***
+. *************
+. twoway lfit wage exp, by(sex)
+
+. 
+. *************
+. *** Q5 C. ***
+. *************
+. gen exp_female_interaction = (exp*female)
+
+. regress wage exp female exp_female_interaction
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =     81.60
+       Model |  156594.891         3   52198.297   Prob > F        =    0.0000
+    Residual |  49047041.4    76,676  639.666146   R-squared       =    0.0032
+-------------+----------------------------------   Adj R-squared   =    0.0031
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    25.292
+
+----------------------------------------------------------------------------------------
+                  wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------------+----------------------------------------------------------------
+                   exp |   .1079927    .010476    10.31   0.000     .0874599    .1285256
+                female |   1.304245    .463232     2.82   0.005      .396313    2.212178
+exp_female_interaction |  -.1510201   .0179131    -8.43   0.000    -.1861296   -.1159106
+                 _cons |   18.96594   .2645053    71.70   0.000     18.44752    19.48437
+----------------------------------------------------------------------------------------
+
+. 
+. *****************
+. *** Question 6 ***
+. *****************
+. sum age
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |     76,680    42.13195    10.27801         25         59
+
+. gen age_centered = (age - r(mean))
+
+. *** method 1 ***
+. egen age_std_1 = std(age)
+
+. *** method 2 ***
+. gen age_std_2 = ((age - r(mean))/r(sd))
+
+. 
+. assert age_std_1 == age_std_2
+
+. 
+. *** my attempts at these three regressions ***
+. * Regression (i)
+. gen age_female_interaction = (age*female)
+
+. regress wage female age age_female_interaction
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =    145.84
+       Model |  279161.835         3  93053.9451   Prob > F        =    0.0000
+    Residual |  48924474.4    76,676  638.067641   R-squared       =    0.0057
+-------------+----------------------------------   Adj R-squared   =    0.0056
+       Total |  49203636.3    76,679  641.683333   Root MSE        =     25.26
+
+----------------------------------------------------------------------------------------
+                  wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------------+----------------------------------------------------------------
+                female |   4.400132   .8213666     5.36   0.000     2.790258    6.010006
+                   age |   .1901307   .0109192    17.41   0.000      .168729    .2115323
+age_female_interaction |     -.1587   .0187944    -8.44   0.000     -.195537    -.121863
+                 _cons |   13.49517   .4695431    28.74   0.000     12.57487    14.41547
+----------------------------------------------------------------------------------------
+
+. * Regression (ii)
+. gen age_centered_female_interaction = (age_centered*female)
+
+. regress wage female age_centered age_centered_female_interaction
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =    145.84
+       Model |  279161.836         3  93053.9454   Prob > F        =    0.0000
+    Residual |  48924474.4    76,676  638.067641   R-squared       =    0.0057
+-------------+----------------------------------   Adj R-squared   =    0.0056
+       Total |  49203636.3    76,679  641.683333   Root MSE        =     25.26
+
+-------------------------------------------------------------------------------------------------
+                           wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------------------------+----------------------------------------------------------------
+                         female |  -2.286209   .1923404   -11.89   0.000    -2.663196   -1.909223
+                   age_centered |   .1901307   .0109192    17.41   0.000     .1687291    .2115324
+age_centered_female_interaction |     -.1587   .0187944    -8.44   0.000     -.195537    -.121863
+                          _cons |   21.50575    .112746   190.75   0.000     21.28477    21.72673
+-------------------------------------------------------------------------------------------------
+
+. * Regression (iii)
+. gen age_std_1_female_interaction = (age_std_1*female)
+
+. regress wage female age_std_1 age_std_1_female_interaction 
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =    145.84
+       Model |  279161.835         3  93053.9451   Prob > F        =    0.0000
+    Residual |  48924474.4    76,676  638.067641   R-squared       =    0.0057
+-------------+----------------------------------   Adj R-squared   =    0.0056
+       Total |  49203636.3    76,679  641.683333   Root MSE        =     25.26
+
+----------------------------------------------------------------------------------------------
+                        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------------------+----------------------------------------------------------------
+                      female |  -2.286209   .1923404   -11.89   0.000    -2.663196   -1.909223
+                   age_std_1 |   1.954165    .112228    17.41   0.000     1.734199    2.174132
+age_std_1_female_interaction |  -1.631121   .1931695    -8.44   0.000    -2.009732   -1.252509
+                       _cons |   21.50575    .112746   190.75   0.000     21.28477    21.72673
+----------------------------------------------------------------------------------------------
+
+. 
+. *** Sample Code From Assignment Modified ***
+. * Regression (i)
+. regress wage female age i.female#c.age
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =    145.84
+       Model |  279161.835         3  93053.9451   Prob > F        =    0.0000
+    Residual |  48924474.4    76,676  638.067641   R-squared       =    0.0057
+-------------+----------------------------------   Adj R-squared   =    0.0056
+       Total |  49203636.3    76,679  641.683333   Root MSE        =     25.26
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      female |   4.400132   .8213666     5.36   0.000     2.790258    6.010006
+         age |   .1901307   .0109192    17.41   0.000      .168729    .2115323
+             |
+female#c.age |
+          1  |     -.1587   .0187944    -8.44   0.000     -.195537    -.121863
+             |
+       _cons |   13.49517   .4695431    28.74   0.000     12.57487    14.41547
+------------------------------------------------------------------------------
+
+. di _b[_cons]
+13.495172
+
+. di _b[female]
+4.400132
+
+. di _b[age]
+.1901307
+
+. di _b[1.female#c.age]
+-.15870002
+
+. sum age if e(sample)==1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |     76,680    42.13195    10.27801         25         59
+
+. di r(mean)
+42.131951
+
+. * Calculate coefficients from (ii) using output from (i)
+. local alpha_b = _b[_cons] + _b[age]*r(mean)
+
+. local beta1_b = _b[female] + _b[1.female#c.age]*r(mean)
+
+. di "`alpha_b'"
+21.50574972853178
+
+. di "`beta1_b'"
+-2.286209398205582
+
+. * Regression (ii)
+. regress wage female age_centered age_centered_female_interaction
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =    145.84
+       Model |  279161.836         3  93053.9454   Prob > F        =    0.0000
+    Residual |  48924474.4    76,676  638.067641   R-squared       =    0.0057
+-------------+----------------------------------   Adj R-squared   =    0.0056
+       Total |  49203636.3    76,679  641.683333   Root MSE        =     25.26
+
+-------------------------------------------------------------------------------------------------
+                           wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------------------------+----------------------------------------------------------------
+                         female |  -2.286209   .1923404   -11.89   0.000    -2.663196   -1.909223
+                   age_centered |   .1901307   .0109192    17.41   0.000     .1687291    .2115324
+age_centered_female_interaction |     -.1587   .0187944    -8.44   0.000     -.195537    -.121863
+                          _cons |   21.50575    .112746   190.75   0.000     21.28477    21.72673
+-------------------------------------------------------------------------------------------------
+
+. assert float(_b[_cons])==float(`alpha_b')
+
+. assert float(_b[female])==float(`beta1_b')
+
+. 
+. *****************
+. *** Question 7 ***
+. *****************
+. gen log_wage = ln(wage)
+(513 missing values generated)
+
+. gen log_exp = ln(exp)
+(4 missing values generated)
+
+. gen exp_squared = exp^2
+
+. 
+. *** regression (i)***
+. regress log_wage schoolyr log_exp
+
+      Source |       SS           df       MS      Number of obs   =    76,163
+-------------+----------------------------------   F(2, 76160)     =   3185.35
+       Model |  1953.13075         2  976.565373   Prob > F        =    0.0000
+    Residual |  23349.1325    76,160  .306579997   R-squared       =    0.0772
+-------------+----------------------------------   Adj R-squared   =    0.0772
+       Total |  25302.2633    76,162  .332216372   Root MSE        =     .5537
+
+------------------------------------------------------------------------------
+    log_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   .0697675   .0009047    77.12   0.000     .0679944    .0715406
+     log_exp |   .1558164   .0036032    43.24   0.000     .1487542    .1628786
+       _cons |   1.475646   .0183176    80.56   0.000     1.439744    1.511549
+------------------------------------------------------------------------------
+
+. 
+. *** regression (ii)***
+. regress log_wage schoolyr exp
+
+      Source |       SS           df       MS      Number of obs   =    76,167
+-------------+----------------------------------   F(2, 76164)     =   3196.20
+       Model |  1959.24108         2  979.620542   Prob > F        =    0.0000
+    Residual |  23343.9087    76,164  .306495309   R-squared       =    0.0774
+-------------+----------------------------------   Adj R-squared   =    0.0774
+       Total |  25303.1498    76,166  .332210564   Root MSE        =    .55362
+
+------------------------------------------------------------------------------
+    log_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   .0699587   .0009053    77.27   0.000     .0681842    .0717331
+         exp |   .0085227    .000196    43.48   0.000     .0081385    .0089069
+       _cons |   1.743112   .0139586   124.88   0.000     1.715753    1.770471
+------------------------------------------------------------------------------
+
+. 
+. *** regression (iii)***
+. regress wage schoolyr log_exp
+
+      Source |       SS           df       MS      Number of obs   =    76,676
+-------------+----------------------------------   F(2, 76673)     =    862.29
+       Model |  1082364.27         2  541182.133   Prob > F        =    0.0000
+    Residual |  48120803.7    76,673   627.61081   R-squared       =    0.0220
+-------------+----------------------------------   Adj R-squared   =    0.0220
+       Total |  49203167.9    76,675    641.7107   Root MSE        =    25.052
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |    1.67303   .0407547    41.05   0.000     1.593151    1.752909
+     log_exp |    3.01849    .162555    18.57   0.000     2.699883    3.337097
+       _cons |  -10.02248   .8258173   -12.14   0.000    -11.64108   -8.403885
+------------------------------------------------------------------------------
+
+. 
+. *** regression (iv)***
+. regress wage schoolyr exp exp_squared
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(3, 76676)     =    576.27
+       Model |  1084933.97         3  361644.657   Prob > F        =    0.0000
+    Residual |  48118702.3    76,676  627.558849   R-squared       =    0.0220
+-------------+----------------------------------   Adj R-squared   =    0.0220
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    25.051
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    schoolyr |   1.669625   .0409229    40.80   0.000     1.589417    1.749834
+         exp |   .2361324    .040058     5.89   0.000      .157619    .3146458
+ exp_squared |  -.0015593   .0008503    -1.83   0.067    -.0032259    .0001073
+       _cons |  -5.376994   .7003872    -7.68   0.000     -6.74975   -4.004239
+------------------------------------------------------------------------------
+
+. 
+. *** going to need these values for ME and elasticity ***
+. mean wage
+
+Mean estimation                         Number of obs = 76,680
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+        wage |   20.67798   .0914786      20.49868    20.85728
+--------------------------------------------------------------
+
+. mean exp
+
+Mean estimation                         Number of obs = 76,680
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+         exp |   23.19669    .038856      23.12053    23.27284
+--------------------------------------------------------------
+
+. 
+. *****************
+. *** Question 8***
+. *****************
+. *** a (i) ***
+. regress wage exp female elem college ma phd
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(6, 76673)     =    403.48
+       Model |  1506026.18         6  251004.363   Prob > F        =    0.0000
+    Residual |  47697610.1    76,673   622.09135   R-squared       =    0.0306
+-------------+----------------------------------   Adj R-squared   =    0.0305
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    24.942
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         exp |   .1479327   .0086861    17.03   0.000     .1309081    .1649573
+      female |   -2.50866   .1898966   -13.21   0.000    -2.880856   -2.136463
+        elem |  -2.511937   .3180957    -7.90   0.000    -3.135403   -1.888471
+     college |   6.191913   .2211621    28.00   0.000     5.758436    6.625389
+          ma |   18.88559   .4957355    38.10   0.000     17.91396    19.85723
+         phd |   21.23274   2.381297     8.92   0.000     16.56541    25.90007
+       _cons |     16.186   .2439085    66.36   0.000     15.70794    16.66406
+------------------------------------------------------------------------------
+
+. 
+. *** a (ii) ***
+. regress wage female exp ib2.educ_cat5
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(6, 76673)     =    403.48
+       Model |  1506026.18         6  251004.363   Prob > F        =    0.0000
+    Residual |  47697610.1    76,673   622.09135   R-squared       =    0.0306
+-------------+----------------------------------   Adj R-squared   =    0.0305
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    24.942
+
+-----------------------------------------------------------------------------------------------------
+                               wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+------------------------------------+----------------------------------------------------------------
+                             female |   -2.50866   .1898966   -13.21   0.000    -2.880856   -2.136463
+                                exp |   .1479327   .0086861    17.03   0.000     .1309081    .1649573
+                                    |
+                          educ_cat5 |
+                   Elemtary School  |  -2.511937   .3180957    -7.90   0.000    -3.135403   -1.888471
+                           College  |   6.191913   .2211621    28.00   0.000     5.758436    6.625389
+Masters Degree/Professional Degree  |   18.88559   .4957355    38.10   0.000     17.91396    19.85723
+                               PhD  |   21.23274   2.381297     8.92   0.000     16.56541    25.90007
+                                    |
+                              _cons |     16.186   .2439085    66.36   0.000     15.70794    16.66406
+-----------------------------------------------------------------------------------------------------
+
+. 
+. *** b (i) ***
+. regress wage exp female elem hs ma phd
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(6, 76673)     =    403.48
+       Model |  1506026.18         6  251004.363   Prob > F        =    0.0000
+    Residual |  47697610.1    76,673   622.09135   R-squared       =    0.0306
+-------------+----------------------------------   Adj R-squared   =    0.0305
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    24.942
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         exp |   .1479327   .0086861    17.03   0.000     .1309081    .1649573
+      female |   -2.50866   .1898966   -13.21   0.000    -2.880856   -2.136463
+        elem |   -8.70385   .3576128   -24.34   0.000    -9.404769    -8.00293
+          hs |  -6.191913   .2211621   -28.00   0.000    -6.625389   -5.758436
+          ma |   12.69368   .5143864    24.68   0.000     11.68549    13.70188
+         phd |   15.04083   2.385328     6.31   0.000      10.3656    19.71606
+       _cons |   22.37791   .2566581    87.19   0.000     21.87486    22.88096
+------------------------------------------------------------------------------
+
+. 
+. *** b (ii) ***
+. regress wage female exp ib3.educ_cat5
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(6, 76673)     =    403.48
+       Model |  1506026.18         6  251004.363   Prob > F        =    0.0000
+    Residual |  47697610.1    76,673   622.09135   R-squared       =    0.0306
+-------------+----------------------------------   Adj R-squared   =    0.0305
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    24.942
+
+-----------------------------------------------------------------------------------------------------
+                               wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+------------------------------------+----------------------------------------------------------------
+                             female |   -2.50866   .1898966   -13.21   0.000    -2.880856   -2.136463
+                                exp |   .1479327   .0086861    17.03   0.000     .1309081    .1649573
+                                    |
+                          educ_cat5 |
+                   Elemtary School  |   -8.70385   .3576128   -24.34   0.000    -9.404769    -8.00293
+                       High School  |  -6.191913   .2211621   -28.00   0.000    -6.625389   -5.758436
+Masters Degree/Professional Degree  |   12.69368   .5143864    24.68   0.000     11.68549    13.70188
+                               PhD  |   15.04083   2.385328     6.31   0.000      10.3656    19.71606
+                                    |
+                              _cons |   22.37791   .2566581    87.19   0.000     21.87486    22.88096
+-----------------------------------------------------------------------------------------------------
+
+. 
+. *****************
+. *** Question 9***
+. *****************
+. gen elem_female_interaction = elem*female
+
+. gen college_female_interaction = college*female
+
+. gen ma_female_interaction = ma*female
+
+. gen phd_female_interaction = phd*female
+
+. 
+. 
+. 
+. regress wage exp exp_squared female elem college ma phd elem_female_interaction college_female_interaction ma_female_interaction phd_female_interaction
+
+      Source |       SS           df       MS      Number of obs   =    76,680
+-------------+----------------------------------   F(11, 76668)    =    226.32
+       Model |  1547449.96        11  140677.269   Prob > F        =    0.0000
+    Residual |  47656186.3    76,668   621.59162   R-squared       =    0.0314
+-------------+----------------------------------   Adj R-squared   =    0.0313
+       Total |  49203636.3    76,679  641.683333   Root MSE        =    24.932
+
+--------------------------------------------------------------------------------------------
+                      wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------------------+----------------------------------------------------------------
+                       exp |   .3634559   .0400819     9.07   0.000     .2848955    .4420162
+               exp_squared |  -.0046751   .0008474    -5.52   0.000     -.006336   -.0030142
+                    female |  -2.577428   .2386941   -10.80   0.000    -3.045267   -2.109589
+                      elem |  -2.408553   .3843259    -6.27   0.000     -3.16183   -1.655276
+                   college |   6.066555    .273326    22.20   0.000     5.530838    6.602273
+                        ma |   19.97012   .6153639    32.45   0.000     18.76401    21.17623
+                       phd |   12.95866   2.902033     4.47   0.000     7.270692    18.64663
+   elem_female_interaction |   .1538939   .6788575     0.23   0.821    -1.176663    1.484451
+college_female_interaction |   .5155862   .4537302     1.14   0.256    -.3737226    1.404895
+     ma_female_interaction |  -2.970391   1.029624    -2.88   0.004     -4.98845   -.9523325
+    phd_female_interaction |   25.29258   5.071905     4.99   0.000     15.35167    35.23349
+                     _cons |   14.23783   .4363699    32.63   0.000     13.38254    15.09311
+--------------------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. exit, clear

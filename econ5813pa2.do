@@ -51,7 +51,7 @@ describe, short
 
 
 *****************
-*** Qestion 1 ***
+*** Question 1 ***
 *****************
 
 *************
@@ -343,6 +343,123 @@ mean educ_cat5 if female == 1
 mean educ_cat5
 
 *****************
-*** Qestion 4***
+*** Question 4 ***
 *****************
 regress wage exp
+
+*************
+*** Q4 D. ***
+*************
+predict wage_hat
+**compare wage_hat and wage values**
+sum wage_hat
+sum wage
+
+*****************
+*** Qestion 5 ***
+*****************
+regress wage exp if female == 0
+regress wage exp if female == 1
+
+*************
+*** Q5 A. ***
+*************
+twoway lfit wage exp, by(sex)
+
+*************
+*** Q5 C. ***
+*************
+gen exp_female_interaction = (exp*female)
+regress wage exp female exp_female_interaction
+
+*****************
+*** Question 6 ***
+*****************
+sum age
+gen age_centered = (age - r(mean))
+*** method 1 ***
+egen age_std_1 = std(age)
+*** method 2 ***
+gen age_std_2 = ((age - r(mean))/r(sd))
+
+assert age_std_1 == age_std_2
+
+*** my attempts at these three regressions ***
+* Regression (i)
+gen age_female_interaction = (age*female)
+regress wage female age age_female_interaction
+* Regression (ii)
+gen age_centered_female_interaction = (age_centered*female)
+regress wage female age_centered age_centered_female_interaction
+* Regression (iii)
+gen age_std_1_female_interaction = (age_std_1*female)
+regress wage female age_std_1 age_std_1_female_interaction 
+
+*** Sample Code From Assignment Modified ***
+* Regression (i)
+regress wage female age i.female#c.age
+di _b[_cons]
+di _b[female]
+di _b[age]
+di _b[1.female#c.age]
+sum age if e(sample)==1
+di r(mean)
+* Calculate coefficients from (ii) using output from (i)
+local alpha_b = _b[_cons] + _b[age]*r(mean)
+local beta1_b = _b[female] + _b[1.female#c.age]*r(mean)
+di "`alpha_b'"
+di "`beta1_b'"
+* Regression (ii)
+regress wage female age_centered age_centered_female_interaction
+assert float(_b[_cons])==float(`alpha_b')
+assert float(_b[female])==float(`beta1_b')
+
+*****************
+*** Question 7 ***
+*****************
+gen log_wage = ln(wage)
+gen log_exp = ln(exp)
+gen exp_squared = exp^2
+
+*** regression (i)***
+regress log_wage schoolyr log_exp
+
+*** regression (ii)***
+regress log_wage schoolyr exp
+
+*** regression (iii)***
+regress wage schoolyr log_exp
+
+*** regression (iv)***
+regress wage schoolyr exp exp_squared
+
+*** going to need these values for ME and elasticity ***
+mean wage
+mean exp
+
+*****************
+*** Question 8***
+*****************
+*** a (i) ***
+regress wage exp female elem college ma phd
+
+*** a (ii) ***
+regress wage female exp ib2.educ_cat5
+
+*** b (i) ***
+regress wage exp female elem hs ma phd
+
+*** b (ii) ***
+regress wage female exp ib3.educ_cat5
+
+*****************
+*** Question 9***
+*****************
+gen elem_female_interaction = elem*female
+gen college_female_interaction = college*female
+gen ma_female_interaction = ma*female
+gen phd_female_interaction = phd*female
+
+
+
+regress wage exp exp_squared female elem college ma phd elem_female_interaction college_female_interaction ma_female_interaction phd_female_interaction
